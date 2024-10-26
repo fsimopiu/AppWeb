@@ -31,7 +31,7 @@ model compte {
   nom                                            String?
   prenom                                         String?
   mail                                           String?
-  type                                           Int?
+  type                                           Int? ///* type : 0 pour client et 1 pour prestataire */
   password                                       String?
   reservation_reservation_id_clientTocompte      reservation[] @relation("reservation_id_clientTocompte")
   reservation_reservation_id_prestataireTocompte reservation[] @relation("reservation_id_prestataireTocompte")
@@ -49,6 +49,7 @@ model reservation {
   compte_reservation_id_prestataireTocompte compte?  @relation("reservation_id_prestataireTocompte", fields: [id_prestataire], references: [id_compte], onDelete: NoAction, onUpdate: NoAction)
   service                                   service? @relation(fields: [id_service], references: [id_service], onDelete: NoAction, onUpdate: NoAction)
 }
+
 
 model service {
   id_service     Int           @id @default(autoincrement())
