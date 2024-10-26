@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createApp } from 'vue';

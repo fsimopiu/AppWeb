@@ -1,3 +1,27 @@
 .menu {
-    height: 40%;
+    height: 15%;
+    background-image: url('./../../assets/fond_menu.avif') !important;
+    background-size: cover; 
+    background-repeat: no-repeat;
+}
+
+.fas {
+    width: 5Opx;
+}
+
+.page {
+    height: 100%;
+}
+
+.contenu {
+    margin-top: 100px;
+    height: 100%;
+}
+
+.bienvenue {
+    width: 100%;
+    height: 50%;
+    background-image: url('./../../assets/toulouse.png') !important;
+    background-size: cover; 
+    background-repeat: no-repeat;
 }
