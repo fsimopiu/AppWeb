@@ -31,9 +31,9 @@ app.get('/api/comptes/:id?', async (req, res) => {
       res.status(200).json(comptes);
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur serveur' });
-  }
+    console.error("Erreur de récupération du compte:", error);
+    res.status(500).json({ message: 'Erreur serveur', details: error.message });
+  }  
 });
 
 // 2. Récupérer un service spécifique ou tous les services
@@ -55,9 +55,9 @@ app.get('/api/services/:id?', async (req, res) => {
       res.status(200).json(services);
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur serveur' });
-  }
+    console.error("Erreur de récupération du compte:", error);
+    res.status(500).json({ message: 'Erreur serveur', details: error.message });
+  }  
 });
 
 // 3. Récupérer une réservation spécifique ou toutes les réservations
