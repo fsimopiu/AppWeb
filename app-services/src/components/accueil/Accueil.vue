@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col">
         <!-- Navbar -->
-        <nav class="fixed top-0 left-0 w-full bg-blue-600 text-white p-4 shadow z-10 flex justify-between items-center">
+        <nav class="menu fixed top-0 left-0 w-full bg-blue-600 text-white p-4 shadow z-10 flex justify-between items-center">
             <div class="text-xl font-bold">Mon Application</div>
         </nav>
 
