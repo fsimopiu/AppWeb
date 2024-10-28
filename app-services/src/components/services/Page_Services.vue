@@ -31,9 +31,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  gap: 32px;
 }
 .service_container > *{
-  flex: 1 1 calc(33.333% - 32px); /* Adjust size and spacing */
+  flex: 0 0 calc(50% - 32px); /* Adjust size and spacing */
   box-sizing: border-box;
 }
 </style>
