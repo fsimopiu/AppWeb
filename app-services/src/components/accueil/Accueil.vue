@@ -102,7 +102,7 @@
         try {
         const response = await compteServices.getComptes();
         this.comptes = response.data;
-        console.log(comptes);
+        console.log(this.comptes);
         } catch (error) {
         console.error("Erreur lors de la récupération des comptes:", error);
         }
