@@ -45,14 +45,16 @@
             </aside>
 
             <!-- Contenu principal -->
-            <main class="flex-1 p-8 bg-gray-100 text-black">
+            <main class="flex-1 p-8 bg-gray-100 text-black h-full">
                 
                 <div class="h-full w-full">
                     <div class="bienvenue">
-
+                        <h1 class="text-3xl font-bold mb-6">Réservations de services sur Toulouse</h1>
+                        <img src="./../../assets/toulouse.jpeg" alt="Image de Toulouse" class="image-style">
                     </div>
-                    <h1 class="text-3xl font-bold mb-6">Bienvenue sur notre page d'accueil</h1>
-                    <p class="mb-4">Dans un petit village niché entre les montagnes et la mer, les habitants se réveillaient chaque
+
+                    <div>
+                        <p class="mb-4">Dans un petit village niché entre les montagnes et la mer, les habitants se réveillaient chaque
                         matin au son des vagues et des oiseaux. Les rues pavées étaient bordées de maisons colorées, chacune racontant
                         une histoire à travers ses fenêtres et ses balcons fleuris. Au centre du village, une place animée accueillait
                         un marché où les artisans vendaient des produits locaux : du pain frais, des légumes croquants et des poteries artisanales.
@@ -61,7 +63,17 @@
                         sur des contrées lointaines et des merveilles invisibles à l'œil nu. Les enfants, les yeux écarquillés, l'écoutaient attentivement,
                         rêvant d'aventures et de découvertes. Les adultes, d'abord sceptiques, ont commencé à sourire, se laissant emporter par l'enthousiasme
                         contagieux de l'étranger. Ce jour-là, le village a été plongé dans un tourbillon de joie et d'imagination, comme si le temps s'était arrêté pour accueillir la magie des récits.
-                    s</p>
+                        s</p>
+                    </div>
+                    
+                    <div>
+                        <h2>J'affiche les comptes</h2>
+                        <ul>
+                            <li v-for="compte in comptes" :key="compte.id_compte">
+                                {{ compte.nom }} - {{ compte.email }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 
             </main>
@@ -77,16 +89,23 @@
 <style scoped src="./Accueil.css"></style>
 
 <script>
+
+    import compteServices from '../../services/comptesServices';
+
     export default {
     data() {
         return {
-        isMenuOpen: true, // Menu déroulant affiché par défaut
+        comptes: []
         };
     },
-    methods: {
-        toggleMenu() {
-        this.isMenuOpen = !this.isMenuOpen; // Permet de basculer l'état du menu
-        },
-    },
+    async created() {
+        try {
+        const response = await compteServices.getComptes();
+        this.comptes = response.data;
+        console.log(comptes);
+        } catch (error) {
+        console.error("Erreur lors de la récupération des comptes:", error);
+        }
+    }
     };
 </script>
