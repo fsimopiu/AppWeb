@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS service (
 
 CREATE TABLE IF NOT EXISTS reservation (
     id_reservation INTEGER PRIMARY KEY AUTOINCREMENT,
-    date_rdv DATE,
+    date_rdv TEXT,
     time_rdv TEXT,
     id_service INTEGER,
     id_prestataire INTEGER,
