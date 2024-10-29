@@ -47,30 +47,33 @@
             <!-- Contenu principal -->
             <main class="flex-1 p-8 bg-gray-100 text-black h-full">
                 
-                <div class="h-full w-full">
-                    <div class="bienvenue">
-                        <h1 class="text-3xl font-bold mb-6">Réservations de services sur Toulouse</h1>
-                        <img src="./../../assets/toulouse.jpeg" alt="Image de Toulouse" class="image-style">
+                <div class="h-full w-full flex flex-col items-center justify-center p-8 bg-gray-100">
+                    <div class="bienvenue text-center">
+                        <h1 class="text-4xl font-bold mb-4 text-purple-700">Réservations de services sur Toulouse</h1>
+                        <img src="./../../assets/toulouse.jpeg" alt="Image de Toulouse" class="image-style mx-auto">
                     </div>
 
-                    <div>
-                        <p class="mb-4">Dans un petit village niché entre les montagnes et la mer, les habitants se réveillaient chaque
-                        matin au son des vagues et des oiseaux. Les rues pavées étaient bordées de maisons colorées, chacune racontant
-                        une histoire à travers ses fenêtres et ses balcons fleuris. Au centre du village, une place animée accueillait
-                        un marché où les artisans vendaient des produits locaux : du pain frais, des légumes croquants et des poteries artisanales.
-                        Un jour, un étranger est arrivé, portant un chapeau large et un grand sourire. Il avait une étrange machine en bois qui faisait
-                        des bruits amusants. Intrigués, les villageois se sont rassemblés autour de lui, et il a commencé à raconter des histoires incroyable
-                        sur des contrées lointaines et des merveilles invisibles à l'œil nu. Les enfants, les yeux écarquillés, l'écoutaient attentivement,
-                        rêvant d'aventures et de découvertes. Les adultes, d'abord sceptiques, ont commencé à sourire, se laissant emporter par l'enthousiasme
-                        contagieux de l'étranger. Ce jour-là, le village a été plongé dans un tourbillon de joie et d'imagination, comme si le temps s'était arrêté pour accueillir la magie des récits.
-                        s</p>
+                    <div style="margin-top: 10px; font-size: larger">
+                        <p class="font-serif leading-relaxed text-2xl text-gray-800">
+                            Bienvenue sur notre plateforme de réservations dédiée aux services à Toulouse, où chaque utilisateur peut facilement trouver ou proposer un service 
+                            dans des catégories variées, telles que la médecine, la coiffure, le bien-être, et bien plus encore. Notre objectif est de simplifier la prise de rendez-vous 
+                            pour les demandeurs en leur permettant de consulter la disponibilité des prestataires qualifiés, de comparer les offres, et de réserver en quelques clics.
+                            <br><br>
+                            En tant que prestataire de services, vous pouvez également tirer parti de notre plateforme pour attirer une clientèle élargie en vous inscrivant et en présentant 
+                            vos disponibilités, afin que chaque demandeur puisse réserver vos services en fonction de ses besoins. Grâce à notre interface intuitive et accessible, nous facilitons 
+                            les échanges et renforçons la connexion entre les professionnels et les particuliers, rendant chaque expérience de réservation rapide, fiable et personnalisée.
+                            <br><br>
+                            Notre plateforme est conçue pour répondre aux exigences modernes de flexibilité et de praticité, vous offrant ainsi un moyen simple et efficace de gérer les réservations 
+                            pour divers services dans la région toulousaine. Profitez d’une expérience fluide, sécurisée, et adaptée à vos attentes, et rejoignez dès maintenant notre communauté de services de confiance.
+                        </p>
                     </div>
-                    
-                    <div>
-                        <h2>J'affiche les comptes</h2>
-                        <ul>
-                            <li v-for="compte in comptes" :key="compte.id_compte">
-                                {{ compte.nom }} - {{ compte.email }}
+
+                    <!-- à supprimer : Exemple pour tester l'api backend -->
+                    <div class="bg-white rounded-lg shadow-md p-6 max-w-lg w-full">
+                        <h2 class="text-2xl font-semibold text-purple-600 mb-4">J'affiche les comptes</h2>
+                        <ul class="list-disc list-inside">
+                            <li v-for="compte in comptes" :key="compte.id_compte" class="text-gray-700">
+                                {{ compte.nom }} - {{ compte.prenom }}
                             </li>
                         </ul>
                     </div>

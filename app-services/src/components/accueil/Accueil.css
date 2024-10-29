@@ -19,19 +19,18 @@
 }
 
 .bienvenue {
-    margin-top: 10px;
-    display: flex; /* Active le mode flex */
-    flex-direction: column; /* Empile les éléments verticalement */
-    align-items: center; /* Centre horizontalement */
-    justify-content: center; /* Centre verticalement (facultatif si vous voulez l'image au centre de la section) */
-    text-align: center; /* Centre le texte */
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px !important;
 
     .image-style {
-        border-radius: 15px; /* Arrondit les coins */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ajoute une ombre */
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         width: 55%;
     }
+    
 }
 
 main {

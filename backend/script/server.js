@@ -1,12 +1,21 @@
 //const express = require('express');
-import express from 'express'
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
+import cors from 'cors';
+import express from 'express';
+
 const prisma = new PrismaClient();
+
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Autoriser les requêtes depuis l'origine spécifique (par exemple, http://localhost:5174)
+// Configuration CORS
+app.use(cors({
+  origin: 'http://localhost:5173' // L'URL de votre frontend
+}));
 
 // 1. Récupérer un compte spécifique ou tous les comptes
 app.get('/api/comptes/:id?', async (req, res) => {
