@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Accueil from '/src/components/accueil/Accueil.vue'
-import Case_services from '/src/components/services/Case_services.vue'
+import Accueil from '../components/accueil/Accueil.vue'
+import Case_services from '../components/services/Case_services.vue'
 import Page_Services from "../components/services/Page_Services.vue";
 
 const routes = [
@@ -19,7 +19,7 @@ const routes = [
     {
         path: '/test_page_serv',
         component: Page_Services
-    }
+    },
 
 ]
 

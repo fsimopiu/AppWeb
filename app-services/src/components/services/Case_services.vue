@@ -1,7 +1,8 @@
 <template>
   <div class="border border-black p-4
   box-border rounded overflow-auto shadow-lg
-  bg-blue-500 flex flex-row">
+  bg-blue-500 flex flex-row"
+  @click="handleClick">
     <div class="text-left">
       <p class="mb-12"> {{ nom }}</p>
       <p class="mb-5"> {{ addr }}</p>
@@ -34,6 +35,11 @@ export default {
     imageSrc: {
       type: String,
       default: imagePath
+    }
+  },
+  methods: {
+    handleClick() {
+      
     }
   }
 }
