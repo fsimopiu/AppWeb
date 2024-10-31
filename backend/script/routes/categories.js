@@ -5,24 +5,31 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // Route pour récupérer une catégorie spécifique ou toutes les catégories
-router.get('/:id?', async (req, res) => {
-  const id_categorie = req.params.id ? parseInt(req.params.id) : undefined;
+router.get('/', async (req, res) => {
+  const { id_categorie, nom } = req.query; // Récupérer les paramètres de la requête
+
+  const filters = {}; // Objet pour construire les filtres
+
+  // Validation et ajout des filtres en fonction des paramètres fournis
+  if (id_categorie) {
+    if (isNaN(id_categorie)) {
+      return res.status(400).json({ message: 'id_categorie doit être un nombre.' });
+    }
+    filters.id_categorie = parseInt(id_categorie);
+  }
+  if (nom) filters.nom = { contains: nom, mode: 'insensitive' }; // Recherche insensible à la casse
 
   try {
-    if (id_categorie) {
-      const categorie = await prisma.categorie.findUnique({
-        where: { id_categorie },
-        include: { service: true },
-      });
-      if (categorie) res.status(200).json(categorie);
-      else res.status(404).json({ message: 'Catégorie non trouvée' });
-    } else {
-      const categories = await prisma.categorie.findMany({ include: { service: true } });
-      res.status(200).json(categories);
-    }
+    // Récupérer les catégories en fonction des filtres
+    const categories = await prisma.categorie.findMany({
+      where: filters, // Utiliser les filtres construits
+      include: { service: true },
+    });
+
+    res.status(200).json(categories);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error("Erreur de récupération des catégories:", error);
+    res.status(500).json({ message: 'Erreur serveur', details: error.message });
   }
 });
 
