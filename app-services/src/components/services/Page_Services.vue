@@ -3,6 +3,7 @@
     <!-- creer une case par service contenu dans services (services sauvegardés) -->
     <Case_services
         v-for="service in services"
+        :id="service.id_service"
         :nom="service.compte.nom"
         :addr="service.adresse"
         :profession="service.profession"
@@ -20,9 +21,10 @@ export default {
   data() {
     return {
       services: servicesData,
-      imagePath: imagePath
+      imagePath: imagePath,
+      selectedService: null
     };
-  },
+  }
 }
 </script>
 

@@ -1,8 +1,9 @@
 <template>
   <div class="border border-black p-4
   box-border rounded overflow-auto shadow-lg
-  bg-blue-500 flex flex-row"
-  @click="handleClick">
+  bg-blue-500 flex flex-row
+  hover:border-red-500"
+  @click="navigatetoDetails">
     <div class="text-left">
       <p class="mb-12"> {{ nom }}</p>
       <p class="mb-5"> {{ addr }}</p>
@@ -15,31 +16,19 @@
 </template>
 
 <script>
-import imagePath from '../../assets/img_services/doctor.jpg';
 
 export default {
   name: 'Case_services',
   props: {
-    nom: {
-      type: String,
-      default: 'Jean Claude'
-    },
-    addr: {
-      type: String,
-      default: '5 Rue du Test'
-    },
-    profession: {
-      type: String,
-      default: 'Développeur'
-    },
-    imageSrc: {
-      type: String,
-      default: imagePath
-    }
+    id: Number,
+    nom: String,
+    addr: String,
+    profession: String,
+    imageSrc: String
   },
   methods: {
-    handleClick() {
-      
+    navigatetoDetails() {
+      this.$router.push({path:`/services/${this.id}` });
     }
   }
 }
