@@ -10,11 +10,10 @@ const PORT = 3000;
 
 app.use(express.json());
 
-
-// Autoriser les requêtes depuis l'origine spécifique (par exemple, http://localhost:5174)
+// Autoriser les requêtes depuis l'origine spécifique (par exemple, http://localhost:5173)
 // Configuration CORS
 app.use(cors({
-  origin: 'http://localhost:5173' // L'URL de votre frontend
+  origin: 'http://localhost:5173' // L'URL du frontend
 }));
 
 // Charger les routes
@@ -26,10 +25,3 @@ app.use('/api/services', servicesRoutes);
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
-
-
-// Autoriser les requêtes depuis l'origine spécifique (par exemple, http://localhost:5174)
-// Configuration CORS
-app.use(cors({
-  origin: 'http://localhost:5173' // L'URL de votre frontend
-}));

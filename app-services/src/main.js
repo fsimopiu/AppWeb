@@ -3,6 +3,7 @@ import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createApp } from 'vue';
 import App from './App.vue';
+import ContentAccueil from './components/contentAccueil/ContentAccueil.vue';
 import router from './router';
 import './style.css';
 
@@ -18,5 +19,6 @@ for (const [key, component] of Object.entries(BootstrapVueNext)) {
     app.component(key, component);
 }
 
+app.component("Accueil", ContentAccueil);
 app.mount('#app');
 
