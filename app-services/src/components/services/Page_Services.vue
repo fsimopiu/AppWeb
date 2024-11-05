@@ -15,19 +15,31 @@
 <script>
 import Case_services from './Case_services.vue';
 import imagePath from '../../assets/img_services/doctor.jpg';
-import servicesData from './test_service.json';
+import axios from 'axios';
+
+
+
+
 export default {
   components: {Case_services},
   data() {
     return {
-      services: servicesData,
+      services: [],
       imagePath: imagePath,
       selectedService: null
     };
+  },
+  async created(){
+    try {
+      const response = await axios.get('http://localhost:3000/api/services');
+      this.services = response.data;
+      console.log('Services fetched :', this.services);
+    } catch (error) {
+      console.error('Failed to fetch services :', error);
+    }
   }
 }
 </script>
-
 <style scoped>
 .service_container{
   display: flex;
