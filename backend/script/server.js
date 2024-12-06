@@ -23,8 +23,8 @@ app.use('/api/comptes', comptesRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/services', servicesRoutes);
-app.use('/api/comptes/register', loginRoutes);
-app.use('/api/comptes/login', registerRoutes);
+app.use('/api/connexion/login', loginRoutes);
+app.use('/api/connexion/register', registerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
