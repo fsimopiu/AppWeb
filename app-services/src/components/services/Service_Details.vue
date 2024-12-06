@@ -7,18 +7,6 @@
     <p v-if="service.compte" class="service-account">Nom du compte: {{ service.compte.nom }}</p>
     <p v-if="service.compte" class="service-account">Prénom du compte: {{ service.compte.prenom }}</p>
     <p v-if="service.categorie" class="service-category">Catégorie: {{ service.categorie.nom }}</p>
-    <div v-if="service.calendrier" class="service-calendar">
-      <p>Disponibilités:</p>
-      <ul>
-        <li>Lundi: {{ service.calendrier.lundi }}</li>
-        <li>Mardi: {{ service.calendrier.mardi }}</li>
-        <li>Mercredi: {{ service.calendrier.mercredi }}</li>
-        <li>Jeudi: {{ service.calendrier.jeudi }}</li>
-        <li>Vendredi: {{ service.calendrier.vendredi }}</li>
-        <li>Samedi: {{ service.calendrier.samedi }}</li>
-        <li>Dimanche: {{ service.calendrier.dimanche }}</li>
-      </ul>
-    </div>
     <div class="agenda">
       <vue-meeting-selector
           ref="meetingSelector"
@@ -61,20 +49,6 @@ export default defineComponent({
     const up = () => meetingSelector.value.previousMeetings();
     const down = () => meetingSelector.value.nextMeetings();
 
-    const nextDate = () => {
-      const d = new Date(date.value);
-      const newDate = new Date(d.setDate(d.getDate() + 7));
-      date.value = newDate;
-      this.updateReservationDays(newDate);
-    };
-
-    const previousDate = () => {
-      const d = new Date(date.value);
-      d.setDate(d.getDate() - 7);
-      const newDate = d < new Date() ? new Date() : d;
-      date.value = newDate;
-      this.updateReservationDays(newDate);
-    };
 
     const change = () => {
       console.log(reservations.value);
@@ -87,8 +61,6 @@ export default defineComponent({
       meetingSelector,
       up,
       down,
-      nextDate,
-      previousDate,
       change,
       service,
     };
@@ -117,24 +89,26 @@ export default defineComponent({
         console.log('Service fetched:', this.service);
         console.log('Profession du service:', this.service.profession);
         if (this.service) {
-          await this.initreservationDay(this.service);
+          console.log('Date fetch', new Date());
+          await this.updateReservationDays(this.service, new Date());
         }
       } catch (error) {
         console.error('Failed to fetch service:', error);
       }
     },
-    async initreservationDay(service) {
+    async updateReservationDays(service, date) {
+      console.log('COUCOU');
       try {
-
-        await this.updateReservationDays(service);
-      } catch (error) {
-        console.error('Failed to fetch service:', error);
-      }
-    },
-    async updateReservationDays(service) {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/services?id_calendrier=${service.calendrier.id_calendrier}`);
+        let response = await axios.get(`http://localhost:3000/api/services?id_calendrier=${service.calendrier.id_calendrier}`);
         const openingHours = response.data[0].calendrier;
+
+        response = await axios.get(`http://localhost:3000/api/reservations?id_prestataire=${service.id_prestataire}`);
+        const reservationsData = response.data;
+
+        const reservations = reservationsData.map(reservation => ({
+          date: new Date(reservation.date_rdv),
+          time: reservation.time_rdv.split('-')[0] // Extract the start time
+        }));
 
         if (!openingHours) {
           console.error('No opening hours found for service:', service);
@@ -144,30 +118,56 @@ export default defineComponent({
         const daysOfWeek = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
         let reservationDaysArray = [];
 
-        const newDate = new Date();
+        const todayIndex = date.getDay(); // Get the specified day index (0 for Sunday, 1 for Monday, etc.)
 
         daysOfWeek.forEach((day, index) => {
-          if (openingHours[day]) {
-            const [startTime, endTime] = openingHours[day].split('-');
+          const adjustedIndex = (todayIndex + index) % 7;
+          if (openingHours[daysOfWeek[adjustedIndex]]) {
+            const [startTime, endTime] = openingHours[daysOfWeek[adjustedIndex]].split('-');
             const start = { hours: parseInt(startTime.split(':')[0]), minutes: parseInt(startTime.split(':')[1]) };
             const end = { hours: parseInt(endTime.split(':')[0]), minutes: parseInt(endTime.split(':')[1]) };
 
-            const dayIndex = (index + 1) % 7;
-            const dayDate = new Date(newDate);
-            dayDate.setDate(newDate.getDate() + (dayIndex - newDate.getDay() + 7) % 7);
+            const dayDate = new Date(date);
+            dayDate.setDate(date.getDate() + index); // Set the date to the current day plus the index
 
-
-            const daySlots = slotsGenerator(dayDate, 1, start, end, 30);
+            const daySlots = slotsGenerator(dayDate, 1, start, end, 60, reservations);
             reservationDaysArray.push(...daySlots);
-            console.log('reservation days:', daySlots);
           }
         });
         this.reservationDay = reservationDaysArray;
 
-        console.log('Updated reservation days:', this.reservationDay);
       } catch (error) {
         console.error('Failed to fetch service:', error);
       }
+    },
+    nextDate() {
+      const d = new Date(this.date);
+      const day = d.getDay();
+      const diff = day === 1 ? 7 : (8 - day); // Calculate the difference to the next Monday
+      const nextMonday = new Date(d);
+      nextMonday.setDate(d.getDate() + diff);
+      this.date = nextMonday;
+      console.log('Next date:', this.date);
+      this.updateReservationDays(this.service, this.date);
+    },
+    previousDate() {
+      const d = new Date(this.date);
+      const day = d.getDay();
+      const diff = day === 1 ? -7 : -(day - 1); // Calculate the difference to the previous Monday
+      const previousMonday = new Date(d);
+      previousMonday.setDate(d.getDate() + diff);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+
+      if (previousMonday < today) {
+        this.date = new Date();
+      } else {
+        this.date = previousMonday;
+      }
+
+      console.log('Previous date:', this.date);
+      this.updateReservationDays(this.service, this.date);
     }
   }
 });
@@ -199,26 +199,10 @@ export default defineComponent({
   margin-bottom: 8px;
 }
 
-.service-calendar {
-  margin-top: 20px;
-}
-
-.service-calendar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.service-calendar li {
-  font-size: 14px;
-  margin-bottom: 4px;
-}
 
 .loading-container {
   text-align: center;
   padding: 20px;
 }
 
-.agenda_meeting-selector {
-  margin-top: 20px;
-}
 </style>
