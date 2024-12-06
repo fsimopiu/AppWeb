@@ -15,6 +15,16 @@ const routes = [
                 path: 'Accueil',
                 component: ContentAccueil
             }
+            {
+                path: 'Inscription',
+                component: Inscription,
+                name: 'Inscription'
+            },
+            {
+                path: 'Connexion',
+                component: Connexion,
+                name: 'Connexion'
+            }
         ]
     }
     // {
