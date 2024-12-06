@@ -157,16 +157,13 @@ export default defineComponent({
             dayDate.setDate(newDate.getDate() + (dayIndex - newDate.getDay() + 7) % 7);
 
 
-            const daySlots = slotsGenerator(dayDate, 1, start, end, 60);
+            const daySlots = slotsGenerator(dayDate, 1, start, end, 30);
             reservationDaysArray.push(...daySlots);
             console.log('reservation days:', daySlots);
           }
         });
-        //this.reservationDay = reservationDaysArray;
-        this.reservationDay =[
-          { date: "2024-12-09T08:00:00Z" },
-          { date: "2024-12-09T09:00:00Z" },
-        ];
+        this.reservationDay = reservationDaysArray;
+
         console.log('Updated reservation days:', this.reservationDay);
       } catch (error) {
         console.error('Failed to fetch service:', error);
