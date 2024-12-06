@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import CreerCompte from '../components/comptes/CreerCompte.vue';
+import Connexion from '../components/connexion/Connexion.vue';
 import Structure from '../components/structure/Structure.vue';
 
 const routes = [
@@ -9,6 +11,14 @@ const routes = [
     {
         path: '/Accueil',
         component: Structure
+    },
+    {
+        path: '/Connexion',
+        component: Connexion,
+    },
+    {
+        path: '/CreerCompte',
+        component: CreerCompte
     }
     // {
     //     path: '/test_case',
