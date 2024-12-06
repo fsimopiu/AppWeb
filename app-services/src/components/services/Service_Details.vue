@@ -19,6 +19,20 @@
         <li>Dimanche: {{ service.calendrier.dimanche }}</li>
       </ul>
     </div>
+    <div class="agenda">
+      <vue-meeting-selector
+          ref="meetingSelector"
+          class="agenda_meeting-selector"
+          v-model="reservations"
+          :date="date"
+          :loading="false"
+          multi
+          :meetings-days="reservationDay"
+          @next-date="nextDate"
+          @previous-date="previousDate"
+          @update:modelValue="change"
+      />
+    </div>
   </div>
   <div v-else class="loading-container">
     <p>Loading...</p>
@@ -27,30 +41,58 @@
 
 <script>
 import axios from 'axios';
+import { defineComponent, ref } from "vue";
+import VueMeetingSelector from "vue-meeting-selector";
+import "vue-meeting-selector/dist/style.css";
+import slotsGenerator from "./slotsGenerator.js";
 
-export function getDisponibilites (jour, heureOuverture, reservations) {
-  if (!heureOuverture[jour]) return [];
-  const [openTime, closeTime] = heureOuverture[jour].split("-");
-  const temps_creneaux = 1;
+export default defineComponent({
+  components: {
+    VueMeetingSelector
+  },
+  setup() {
+    const reservations = ref([]);
+    const reservationDay = ref([]);
+    const date = ref(new Date());
+    const service = ref (null);
+    const meetingSelector = ref(null);
 
-  const slots = [];
-  let currentSlot = openTime;
-  while (currentSlot < closeTime) {
-    const [hours, minutes] = currentSlot.split(":");
-    const nextSlot = new Date(0, 0, 0, hours + temps_creneaux, minutes).toTimeString().slice(0, 5);
-    if (nextSlot >= closeTime) break;
-    slots.push({ start: currentSlot, end: closeTime });
-    currentSlot = nextSlot;
-  }
-  return slots.filter(slot => {
-    return !reservations.some(res =>
-        (slot.start >= res.start_time && slot.start < res.end_time) ||
-        (slot.end > res.start_time && slot.end <= res.end_time)
-    );
-  });
-}
 
-export default {
+    const up = () => meetingSelector.value.previousMeetings();
+    const down = () => meetingSelector.value.nextMeetings();
+
+    const nextDate = () => {
+      const d = new Date(date.value);
+      const newDate = new Date(d.setDate(d.getDate() + 7));
+      date.value = newDate;
+      this.updateReservationDays(newDate);
+    };
+
+    const previousDate = () => {
+      const d = new Date(date.value);
+      d.setDate(d.getDate() - 7);
+      const newDate = d < new Date() ? new Date() : d;
+      date.value = newDate;
+      this.updateReservationDays(newDate);
+    };
+
+    const change = () => {
+      console.log(reservations.value);
+    };
+
+    return {
+      reservations,
+      reservationDay,
+      date,
+      meetingSelector,
+      up,
+      down,
+      nextDate,
+      previousDate,
+      change,
+      service,
+    };
+  },
   props: {
     id: {
       type: String,
@@ -74,15 +116,64 @@ export default {
         this.service = response.data[0];
         console.log('Service fetched:', this.service);
         console.log('Profession du service:', this.service.profession);
-        if (!this.service) {
-          console.error('Service not found for ID:', this.id);
+        if (this.service) {
+          await this.initreservationDay(this.service);
         }
+      } catch (error) {
+        console.error('Failed to fetch service:', error);
+      }
+    },
+    async initreservationDay(service) {
+      try {
+
+        await this.updateReservationDays(service);
+      } catch (error) {
+        console.error('Failed to fetch service:', error);
+      }
+    },
+    async updateReservationDays(service) {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/services?id_calendrier=${service.calendrier.id_calendrier}`);
+        const openingHours = response.data[0].calendrier;
+
+        if (!openingHours) {
+          console.error('No opening hours found for service:', service);
+          return;
+        }
+
+        const daysOfWeek = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+        let reservationDaysArray = [];
+
+        const newDate = new Date();
+
+        daysOfWeek.forEach((day, index) => {
+          if (openingHours[day]) {
+            const [startTime, endTime] = openingHours[day].split('-');
+            const start = { hours: parseInt(startTime.split(':')[0]), minutes: parseInt(startTime.split(':')[1]) };
+            const end = { hours: parseInt(endTime.split(':')[0]), minutes: parseInt(endTime.split(':')[1]) };
+
+            const dayIndex = (index + 1) % 7;
+            const dayDate = new Date(newDate);
+            dayDate.setDate(newDate.getDate() + (dayIndex - newDate.getDay() + 7) % 7);
+
+
+            const daySlots = slotsGenerator(dayDate, 1, start, end, 60);
+            reservationDaysArray.push(...daySlots);
+            console.log('reservation days:', daySlots);
+          }
+        });
+        //this.reservationDay = reservationDaysArray;
+        this.reservationDay =[
+          { date: "2024-12-09T08:00:00Z" },
+          { date: "2024-12-09T09:00:00Z" },
+        ];
+        console.log('Updated reservation days:', this.reservationDay);
       } catch (error) {
         console.error('Failed to fetch service:', error);
       }
     }
   }
-}
+});
 </script>
 
 <style scoped>
@@ -128,5 +219,9 @@ export default {
 .loading-container {
   text-align: center;
   padding: 20px;
+}
+
+.agenda_meeting-selector {
+  margin-top: 20px;
 }
 </style>
