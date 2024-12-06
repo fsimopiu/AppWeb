@@ -1,24 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreerCompte from '../components/comptes/CreerCompte.vue';
 import Connexion from '../components/connexion/Connexion.vue';
+import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Structure from '../components/structure/Structure.vue';
 
 const routes = [
     {
         path: '/',
-        redirect: '/Accueil'
+        redirect: '/ReservationService/Acceuil'
     },
     {
-        path: '/Accueil',
-        component: Structure
-    },
-    {
-        path: '/Connexion',
-        component: Connexion,
-    },
-    {
-        path: '/CreerCompte',
-        component: CreerCompte
+        path: '/ReservationService',
+        component: Structure,
+        children: [
+            {
+                path: 'Accueil',
+                component: ContentAccueil
+            },
+            {
+                path: '/Connexion',
+                component: Connexion,
+            },
+            {
+                path: '/CreerCompte',
+                component: CreerCompte
+            }
+        ]
     }
     // {
     //     path: '/test_case',

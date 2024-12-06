@@ -37,7 +37,7 @@
 import compteServices from '../../services/comptesServices';
 
 export default {
-    name: 'Accueil',
+    name: 'ContentAccueil',
     data() {
         return {
         comptes: []

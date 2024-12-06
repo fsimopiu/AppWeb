@@ -46,7 +46,7 @@
 
             <!-- Contenu principal -->
             <main class="flex-1 p-8 bg-gray-100 text-black h-full">
-                <Accueil></Accueil>
+                <router-view></router-view>
             </main>
         </div>
          <!-- Footer -->
