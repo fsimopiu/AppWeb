@@ -1,14 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Structure from '../components/structure/Structure.vue';
+import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue'
 
 const routes = [
     {
         path: '/',
-        redirect: '/Accueil'
+        redirect: '/ReservationService/Acceuil'
     },
     {
-        path: '/Accueil',
-        component: Structure
+        path: '/ReservationService',
+        component: Structure,
+        children: [
+            {
+                path: 'Accueil',
+                component: ContentAccueil
+            }
+        ]
     }
     // {
     //     path: '/test_case',
