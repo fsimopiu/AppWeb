@@ -23,15 +23,6 @@ function formatingDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-/**
- * Function to random a number between min and max
- * @param {Number} min - A date
- * @param {Number} max - time of the date
- * @return {number}
- */
-function randomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
 
 /**
  * Set a time to a date
@@ -80,19 +71,32 @@ function roundToClosestTime(date, interval) {
  * @param {number} randomSlotsToDelete - Number of slots to delete randomly
  * @return {MeetingSlot[]} - A list of meetings
  */
-function generateSlots(start, end, interval, randomSlotsToDelete) {
+function generateSlots(start, end, interval, reservations) {
     let startStamp = start.getTime();
     const endStamp = end.getTime();
     const slots = [];
-    for (;startStamp <= endStamp; startStamp += interval * 60000) {
-        const slot = {
-            date: new Date(startStamp),
-        };
-        slots.push(slot);
-    }
-    for (let i = 0; i < randomSlotsToDelete; i += 1) {
-        const indexToDelete = randomNumber(0, slots.length);
-        slots.splice(indexToDelete, 1);
+    console.log('a quoi ressemble reservations', reservations);
+    for (; startStamp <= endStamp; startStamp += interval * 60000) {
+        let overlaps = false;
+
+        for (const reservation of reservations) {
+            const reservationStart = new Date(reservation.date);
+            reservationStart.setHours(parseInt(reservation.start_time.split(':')[0]), parseInt(reservation.start_time.split(':')[1]));
+            const reservationEnd = new Date(reservation.date);
+            reservationEnd.setHours(parseInt(reservation.end_time.split(':')[0]), parseInt(reservation.end_time.split(':')[1]));
+
+            if (startStamp >= reservationStart.getTime() && startStamp < reservationEnd.getTime()) {
+                overlaps = true;
+                break;
+            }
+        }
+
+        if (!overlaps) {
+            const slot = {
+                date: new Date(startStamp),
+            };
+            slots.push(slot);
+        }
     }
     return slots;
 }
@@ -105,7 +109,7 @@ function generateSlots(start, end, interval, randomSlotsToDelete) {
  * @param {Time} endTime - endTime of the meetings
  * @return {MeetingSlot} - A meetingSlot returned
  */
-function generateFirstDate(date, interval, startTime, endTime) {
+function generateFirstDate(date, interval, startTime, endTime, reservations) {
     let start;
     if (formatingDate(date) <= formatingDate(new Date())) {
         start = roundToClosestTime(date, interval);
@@ -116,7 +120,7 @@ function generateFirstDate(date, interval, startTime, endTime) {
         start = setTime(date, startTime);
     }
     const end = setTime(date, endTime);
-    const slots = generateSlots(start, end, interval);
+    const slots = generateSlots(start, end, interval, reservations);
     return {
         date,
         slots,
@@ -133,27 +137,24 @@ function generateFirstDate(date, interval, startTime, endTime) {
  * @param {number} randomSlotsToDelete - Number of slots to delete randomly
  * @return {MeetingSlot[]} - list of slots
  */
-function generateDays(date, nbDays, startTime, endTime, interval, randomSlotsToDelete = 0) {
+function generateDays(date, nbDays, startTime, endTime, interval, reservations) {
     const days = [];
-    days.push(generateFirstDate(date, interval, startTime, endTime));
+    console.log('a quoi ressemble reservations (GenerateDays)', reservations);
+    days.push(generateFirstDate(date, interval, startTime, endTime, reservations));
     // Set to second Day
     const startingDay = new Date(date);
     for (let i = 1; i < nbDays; i += 1) {
+        console.log('Loop iteration:', i);
         startingDay.setDate(startingDay.getDate() + 1);
         const slotsDate = new Date(startingDay);
-        /**
-         * Use this to not display sunday and saturday
-         * if (slotsDate.getDay() === 0 || slotsDate.getDay() === 6) {
-         *   i -= 1;
-         * } else {
-         */
+        console.log('a quoi ressemble reservations (dans la boucle)', reservations);
         const startDate = setTime(slotsDate, startTime);
         const endDate = setTime(slotsDate, endTime);
         const slots = generateSlots(
             startDate,
             endDate,
             interval,
-            randomSlotsToDelete,
+            reservations
         );
         const meetingsDay = {
             date: new Date(startingDay),

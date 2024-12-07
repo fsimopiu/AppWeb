@@ -20,6 +20,7 @@
           @previous-date="previousDate"
           @update:modelValue="change"
       />
+      <p>reservation Selected: {{ reservations ? reservations : 'No Meeting selected' }}</p>
     </div>
   </div>
   <div v-else class="loading-container">
@@ -105,11 +106,25 @@ export default defineComponent({
         response = await axios.get(`http://localhost:3000/api/reservations?id_prestataire=${service.id_prestataire}`);
         const reservationsData = response.data;
 
-        const reservations = reservationsData.map(reservation => ({
-          date: new Date(reservation.date_rdv),
-          time: reservation.time_rdv.split('-')[0] // Extract the start time
-        }));
+        // const reservations = reservationsData.map(reservation => ({
+        //   date: new Date(reservation.date_rdv),
+        //   start_time: reservation.time_rdv.split('-')[0], // Extract the start time
+        //   end_time: reservation.time_rdv.split('-')[1]
+        // }));
 
+        const reservations = [
+          {
+            date: new Date("2024-12-09T00:00:00.000Z"),
+            start_time: "10:00:00",
+            end_time: "11:00:00"
+          },
+          {
+            date: new Date("2024-12-11T00:00:00.000Z"),
+            start_time: "14:00:00",
+            end_time: "15:00:00"
+          }
+        ];
+        console.log(reservations);
         if (!openingHours) {
           console.error('No opening hours found for service:', service);
           return;
