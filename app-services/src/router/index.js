@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Structure from '../components/structure/Structure.vue';
 import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue'
 import home_compte from '../components/comptes/home_compte.vue';
-import Inscription from '../components/comptes/login.vue';
-import Connexion from '../components/comptes/register.vue';
+import Connexion from '../components/comptes/login.vue';
+import Inscription from '../components/comptes/register.vue';
 
 
 const routes = [
