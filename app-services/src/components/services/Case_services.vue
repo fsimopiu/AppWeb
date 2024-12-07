@@ -1,9 +1,8 @@
 <template>
-  <div class="border border-black p-4
+  <div class="service-box border border-black p-4
   box-border rounded overflow-auto shadow-lg
-  bg-blue-500 flex flex-row
-  hover:border-red-500"
-  @click="navigatetoDetails">
+  bg-blue-500 flex flex-row"
+       @click="navigatetoDetails">
     <div class="text-left">
       <p class="mb-12"> {{ nom }}</p>
       <p class="mb-5"> {{ addr }}</p>
@@ -16,6 +15,7 @@
 </template>
 
 <script>
+
 
 export default {
   name: 'Case_services',
@@ -41,4 +41,12 @@ export default {
   object-fit: contain;
   margin-left: 2px;
 }
+.service-box {
+  transition: background-color 0.3s ease;
+}
+
+.service-box:hover {
+  background-color: #f0f0f0;
+}
+
 </style>
