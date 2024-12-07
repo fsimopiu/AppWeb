@@ -7,7 +7,7 @@ import Structure from '../components/structure/Structure.vue';
 const routes = [
     {
         path: '/',
-        redirect: '/ReservationService/Acceuil'
+        redirect: '/ReservationService/Accueil'
     },
     {
         path: '/ReservationService',
@@ -16,16 +16,16 @@ const routes = [
             {
                 path: 'Accueil',
                 component: ContentAccueil
-            },
-            {
-                path: '/Connexion',
-                component: Connexion,
-            },
-            {
-                path: '/CreerCompte',
-                component: CreerCompte
             }
         ]
+    },
+    {
+        path: '/Connexion',
+        component: Connexion,
+    },
+    {
+        path: '/CreerCompte',
+        component: CreerCompte
     }
     // {
     //     path: '/test_case',

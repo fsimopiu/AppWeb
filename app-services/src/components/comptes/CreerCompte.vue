@@ -123,6 +123,7 @@ button {
 </style>
 
 <script>
+
 export default {
     name: "CreerCompte",
     data() {
@@ -150,21 +151,31 @@ export default {
         }
     },
     methods: {
-        handleSignup() {
-            // Gère la soumission du formulaire
-            if (this.isFormValid) {
-                alert("Compte créé avec succès !");
-                console.log({
-                    nom: this.nom,
-                    prenom: this.prenom,
-                    typeCompte: this.typeCompte,
-                    email: this.email,
-                    password: this.password
-                });
-            } else {
-                alert("Veuillez remplir correctement tous les champs.");
-            }
-        },
+        // async valider() {
+        //     if (this.isFormValid) {
+        //         try {
+        //             // Appel API pour créer le compte
+        //             const response = await api.createCompte({
+        //                 nom: this.nom,
+        //                 prenom: this.prenom,
+        //                 typeCompte: this.typeCompte,
+        //                 email: this.email,
+        //                 mot_de_passe: this.password
+        //             });
+
+        //             alert("Compte créé avec succès !");
+        //             console.log("Réponse API:", response.data);
+
+        //             // Redirige vers la page de connexion après la création du compte
+        //             this.$router.push('/Connexion');
+        //         } catch (error) {
+        //             console.error("Erreur lors de la création du compte:", error.response?.data || error.message);
+        //             alert("Une erreur est survenue lors de la création du compte.");
+        //         }
+        //     } else {
+        //         alert("Veuillez remplir correctement tous les champs.");
+        //     }
+        // },
         seConnecter() {
             this.$router.push('/Connexion');
         }
