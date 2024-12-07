@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import CreerCompte from '../components/comptes/CreerCompte.vue';
+import Connexion from '../components/connexion/Connexion.vue';
+import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Structure from '../components/structure/Structure.vue';
 import Case_services from '../components/services/Case_services.vue'; // Add this line
 import Page_Services from '../components/services/Page_Services.vue'; // Add this line
@@ -8,11 +11,21 @@ import Service_Details from '../components/services/Service_Details.vue';
 const routes = [
     {
         path: '/',
-        redirect: '/Accueil'
+        redirect: '/ReservationService/Accueil'
     },
     {
-        path: '/Accueil',
-        component: Structure
+        path: '/ReservationService',
+        component: Structure,
+        children: [
+            {
+                path: 'Accueil',
+                component: ContentAccueil
+            }
+        ]
+    },
+    {
+        path: '/Connexion',
+        component: Connexion,
     },
     {
         path: '/test_case',
@@ -26,6 +39,10 @@ const routes = [
         path: '/services/:id',
         component: Service_Details,
         props: true
+    },
+    {
+        path: '/CreerCompte',
+        component: CreerCompte
     }
 
 ]

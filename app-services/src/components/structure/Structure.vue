@@ -8,12 +8,16 @@
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
                 <div class="flex flex-col space-y-2">
-                    <button class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button 
+                    @click="seConnecter"
+                    class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Se connecter
                     </button>
 
                     <!-- Bouton Créer un compte -->
-                    <button class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    <button 
+                    @click="CreerCompte"
+                    class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Créer un compte
                     </button>
                 </div>
@@ -46,7 +50,7 @@
 
             <!-- Contenu principal -->
             <main class="flex-1 p-8 bg-gray-100 text-black h-full">
-                <Accueil></Accueil>
+                <router-view></router-view>
             </main>
         </div>
          <!-- Footer -->
@@ -60,6 +64,16 @@
 <style scoped src="./Structure.css"></style>
 
 <script>
-
-
+export default {
+    methods: {
+        // Redirection vers la page Se connecter
+        seConnecter() {
+            this.$router.push('/Connexion'); // Assurez-vous que cette route existe dans votre fichier de configuration
+        },
+        // Redirection vers la page Créer un compte
+        CreerCompte() {
+            this.$router.push('/CreerCompte'); // Assurez-vous que cette route est bien définie comme enfant de /Connexion
+        }
+    }
+};
 </script>

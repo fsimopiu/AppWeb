@@ -10,12 +10,7 @@ const apiClient = axios.create({
 
 export default {
   // Méthodes pour les comptes
-  getComptes(id) {
+  getCategories(id) {
     return id ? apiClient.get(`/comptes/${id}`) : apiClient.get('/comptes');
-  },
-
-  // Service pour créer un nouveau compte
-  createCompte(compteData) {
-    return apiClient.post('/comptes/create', compteData);
-  },
+  }
 }
