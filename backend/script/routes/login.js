@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
                 ...userWithoutPassword 
             } 
         });
-<<<<<<< HEAD
     } catch (error) {
         console.error("Erreur lors de la connexion :", error);
         res.status(500).json({ message: 'Erreur serveur' });
