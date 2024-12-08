@@ -49,8 +49,9 @@ export default {
         this.comptes = response.data;
         console.log(this.comptes);
         } catch (error) {
-        console.error("Erreur lors de la récupération des comptes:", error);
-        }
+            console.error("Erreur lors de la récupération des comptes", error);
+        };
+        
     }
 };
 </script>

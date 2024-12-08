@@ -5,6 +5,9 @@ import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Structure from '../components/structure/Structure.vue';
 import Page_Services from '../components/services/Page_Services.vue';
 import Service_Details from '../components/services/Service_Details.vue';
+//import home_compte from '../components/comptes/home_compte.vue';
+//import Connexion from '../components/comptes/login.vue';
+//import Inscription from '../components/comptes/register.vue';
 
 
 const routes = [
@@ -34,16 +37,14 @@ const routes = [
     {
         path: '/Connexion',
         component: Connexion,
+        name: 'Connexion'
     },
-    // {
-    //     path: '/test_case',
-    //     component: Case_services
-    // },
+
     {
         path: '/CreerCompte',
-        component: CreerCompte
+        component: CreerCompte,
+        name: 'Inscription'
     }
-
 ]
 
 const router = createRouter({
@@ -52,3 +53,19 @@ const router = createRouter({
 })
 
 export default router
+/*,
+            {
+                path: 'choixCompte',
+                component: home_compte,
+                name: 'choix compte'
+            },
+            {
+                path: 'Inscription',
+                component: Inscription,
+                name: 'Inscription'
+            },
+            {
+                path: 'Connexion',
+                component: Connexion,
+                name: 'Connexion'
+            }*/

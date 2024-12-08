@@ -29,7 +29,7 @@
                 <!-- Bouton Valider -->
                 <div class="flex items-center justify-start mb-4">
                     <button
-                        :disabled = "emmail == '' || password == ''" 
+                        :disabled="email == '' || password == ''" 
                         type="submit" 
                         class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
                         Valider
@@ -47,8 +47,52 @@
             </form>
         </div>
     </div>
-    <router-view></router-view> 
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    name: "Connexion",
+    data() {
+        return {
+            email: "", // Stocke l'adresse email saisie
+            password: "" // Stocke le mot de passe saisi
+        };
+    },
+    methods: {
+        async handleSubmit() {
+            // Fonction appelée lors de la soumission du formulaire
+            console.log("Email:", this.email);
+            console.log("Password:", this.password);
+
+            try {
+                // Envoi de la requête de connexion
+                const response = await axios.post('http://localhost:3000/api/connexion/login', {
+                    mail: this.email,
+                    password: this.password
+                });
+
+                // Gérer la réponse du serveur
+                if (response.status === 200) {
+                    console.log('Connexion réussie:', response.data);
+                    // Vous pouvez rediriger l'utilisateur ou stocker le token ici
+                    console.log(response.data);
+                }
+            } catch (error) {
+                if (error.response) {
+                    console.log('Erreur:', error.response.data.message);
+                } else {
+                    console.log('Erreur serveur:', error);
+                }
+            }
+        },
+        redirectToSignup() {
+            this.$router.push('/CreerCompte');
+        }
+    }
+};
+</script>
 
 <style scoped>
 .page {
@@ -58,7 +102,7 @@
     background-repeat: no-repeat;
 }
 
-.login-container {
+.signup-container {
     width: 90%;
     max-width: 400px;
 }
@@ -75,25 +119,3 @@ button {
     transition: background-color 0.3s ease;
 }
 </style>
-
-<script>
-export default {
-    name: "Connexion",
-    data() {
-        return {
-            email: "", // Stocke l'adresse email saisie
-            password: "" // Stocke le mot de passe saisi
-        };
-    },
-    methods: {
-        handleSubmit() {
-            // Fonction appelée lors de la soumission du formulaire
-            console.log("Email:", this.email);
-            console.log("Password:", this.password);
-        },
-        redirectToSignup() {
-            this.$router.push('/CreerCompte');
-        }
-    }
-};
-</script>
