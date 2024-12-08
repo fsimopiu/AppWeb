@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Erreur serveur', details: error.message });
     }
 });
-
+/*
 router.post('/create', async (req, res) => {
     const { nom, prenom, mail, mot_de_passe } = req.body; // Récupérer les données du corps de la requête
 
@@ -76,6 +76,6 @@ router.post('/create', async (req, res) => {
         res.status(500).json({ message: 'Erreur serveur', details: error.message });
     }
 });
-
+*/
 
 export default router;

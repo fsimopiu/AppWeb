@@ -96,6 +96,79 @@
     </div>
 </template>
 
+
+
+<script>
+export default {
+    name: "CreerCompte",
+    data() {
+        return {
+            nom: "", // Nom de l'utilisateur
+            prenom: "", // Prénom
+            typeCompte: "", // Type de compte
+            email: "", // Adresse email
+            password: "", // Mot de passe
+            confirmPassword: "" // Confirmation mot de passe
+        };
+    },
+    computed: {
+        isFormValid() {
+            // Vérifie si tous les champs sont remplis et si les mots de passe correspondent
+            return (
+                this.nom &&
+                this.prenom &&
+                this.typeCompte &&
+                this.email &&
+                this.password &&
+                this.confirmPassword &&
+                this.password === this.confirmPassword
+            );
+        }
+    },
+    methods: {
+        async handleSignup() {
+            if (!this.isFormValid) {
+                alert("Veuillez remplir tous les champs et vérifier les mots de passe.");
+                return;
+            }
+            try {
+                // Appel API pour créer un compte
+                const response = await fetch('http://localhost:3000/api/connexion/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nom: this.nom,
+                        prenom: this.prenom,
+                        mail: this.email,
+                        password: this.password,
+                        type: this.typeCompte === "Prestataire" ? 1 : 0, // 1 pour Prestataire, 0 pour Client
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Compte créé avec succès.');
+                    this.$router.push('/Connexion'); // Redirige vers la page de connexion
+                } else {
+                    alert(`Erreur : ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la création du compte :', error);
+                alert("Une erreur serveur est survenue.");
+            }
+        },
+        seConnecter() {
+            // Redirige vers la page de connexion
+            this.$router.push('/Connexion');
+        }
+    }
+};
+</script>
+
+
 <style scoped>
 .page {
     height: 100vh;
@@ -121,64 +194,3 @@ button {
     transition: background-color 0.3s ease;
 }
 </style>
-
-<script>
-
-export default {
-    name: "CreerCompte",
-    data() {
-        return {
-            nom: "", // Stocke le nom
-            prenom: "", // Stocke le prénom
-            typeCompte: "", // Stocke le type de compte choisi
-            email: "", // Stocke l'email
-            password: "", // Stocke le mot de passe
-            confirmPassword: "" // Stocke la confirmation du mot de passe
-        };
-    },
-    computed: {
-        isFormValid() {
-            // Vérifie si tous les champs sont correctement remplis
-            return (
-                this.nom &&
-                this.prenom &&
-                this.typeCompte &&
-                this.email &&
-                this.password &&
-                this.confirmPassword &&
-                this.password === this.confirmPassword
-            );
-        }
-    },
-    methods: {
-        // async valider() {
-        //     if (this.isFormValid) {
-        //         try {
-        //             // Appel API pour créer le compte
-        //             const response = await api.createCompte({
-        //                 nom: this.nom,
-        //                 prenom: this.prenom,
-        //                 typeCompte: this.typeCompte,
-        //                 email: this.email,
-        //                 mot_de_passe: this.password
-        //             });
-
-        //             alert("Compte créé avec succès !");
-        //             console.log("Réponse API:", response.data);
-
-        //             // Redirige vers la page de connexion après la création du compte
-        //             this.$router.push('/Connexion');
-        //         } catch (error) {
-        //             console.error("Erreur lors de la création du compte:", error.response?.data || error.message);
-        //             alert("Une erreur est survenue lors de la création du compte.");
-        //         }
-        //     } else {
-        //         alert("Veuillez remplir correctement tous les champs.");
-        //     }
-        // },
-        seConnecter() {
-            this.$router.push('/Connexion');
-        }
-    }
-};
-</script>
