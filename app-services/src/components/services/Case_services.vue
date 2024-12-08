@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     navigatetoDetails() {
-      this.$router.push({path:`/services/${this.id}` });
+      this.$router.push({path:`/ReservationService/service/${this.id}` });
     }
   }
 }

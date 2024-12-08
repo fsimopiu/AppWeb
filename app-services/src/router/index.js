@@ -3,8 +3,7 @@ import CreerCompte from '../components/comptes/CreerCompte.vue';
 import Connexion from '../components/connexion/Connexion.vue';
 import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Structure from '../components/structure/Structure.vue';
-import Case_services from '../components/services/Case_services.vue'; // Add this line
-import Page_Services from '../components/services/Page_Services.vue'; // Add this line
+import Page_Services from '../components/services/Page_Services.vue';
 import Service_Details from '../components/services/Service_Details.vue';
 
 
@@ -20,6 +19,15 @@ const routes = [
             {
                 path: 'Accueil',
                 component: ContentAccueil
+            },
+            {
+                path:'PageServices',
+                component: Page_Services
+            },
+            {
+                path: 'service/:id',
+                component: Service_Details,
+                props: true
             }
         ]
     },
@@ -27,19 +35,10 @@ const routes = [
         path: '/Connexion',
         component: Connexion,
     },
-    {
-        path: '/test_case',
-        component: Case_services
-    },
-    {
-        path: '/test_page_serv',
-        component: Page_Services
-    },
-    {
-        path: '/services/:id',
-        component: Service_Details,
-        props: true
-    },
+    // {
+    //     path: '/test_case',
+    //     component: Case_services
+    // },
     {
         path: '/CreerCompte',
         component: CreerCompte
