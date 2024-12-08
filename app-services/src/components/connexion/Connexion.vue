@@ -92,3 +92,29 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.page {
+    height: 100vh;
+    background-image: url('./../../assets/fond_menu.avif');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.signup-container {
+    width: 90%;
+    max-width: 400px;
+}
+
+.input-field {
+    transition: all 0.3s ease-in-out;
+}
+
+.input-field:focus {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+</style>
