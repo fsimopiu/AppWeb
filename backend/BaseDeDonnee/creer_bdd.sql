@@ -92,6 +92,5 @@ VALUES
 -- Réservations
 INSERT INTO reservation (date_rdv, time_rdv, id_service, id_prestataire, id_client)
 VALUES 
-('2024-10-25', '10:00:00-11:00:00', 1, 1, 3), 
-('2024-10-25', '14:00:00-15:00:00', 2, 2, 3);
-
+('2024-12-15', '10:00:00-11:00:00', 1, 1, 3),
+('2024-12-15', '14:00:00-15:00:00', 2, 2, 3);

@@ -3,6 +3,8 @@ import CreerCompte from '../components/comptes/CreerCompte.vue';
 import Connexion from '../components/connexion/Connexion.vue';
 import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Structure from '../components/structure/Structure.vue';
+import Page_Services from '../components/services/Page_Services.vue';
+import Service_Details from '../components/services/Service_Details.vue';
 //import home_compte from '../components/comptes/home_compte.vue';
 //import Connexion from '../components/comptes/login.vue';
 //import Inscription from '../components/comptes/register.vue';
@@ -20,6 +22,15 @@ const routes = [
             {
                 path: 'Accueil',
                 component: ContentAccueil
+            },
+            {
+                path:'PageServices',
+                component: Page_Services
+            },
+            {
+                path: 'service/:id',
+                component: Service_Details,
+                props: true
             }
         ]
     },
@@ -28,6 +39,7 @@ const routes = [
         component: Connexion,
         name: 'Connexion'
     },
+
     {
         path: '/CreerCompte',
         component: CreerCompte,
