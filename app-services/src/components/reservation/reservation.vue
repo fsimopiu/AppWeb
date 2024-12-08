@@ -34,8 +34,13 @@ export default {
   },
   mounted() {
     const id = this.route.params.id;
+    const type = this.route.query.type;
+
+    const queryParam = type === '1' ? 'id_prestataire' : 'id_client';
+
+
     axios
-      .get(`http://localhost:3000/api/reservations?id_client=${id}`)
+      .get(`http://localhost:3000/api/reservations?${queryParam}=${id}`)
       .then((response) => {
         this.reservations = response.data;
       })

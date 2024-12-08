@@ -28,6 +28,7 @@ import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 
 export default {
+  
   name: 'AccountPage',
   data() {
     return {
@@ -41,6 +42,13 @@ export default {
   },
   mounted() {
     const id = this.route.params.id;
+
+    // Redirige vers la page de connexion si l'ID est -1
+    if (id === '-1') {
+      this.router.push('/Connexion');
+      return;
+    }
+
     axios
       .get(`http://localhost:3000/api/comptes?id_compte=${id}`)
       .then((response) => {
@@ -52,57 +60,8 @@ export default {
   },
   methods: {
     goToReservations() {
-      this.router.push(`/compte/${this.route.params.id}/reservations`);
+      this.router.push(`/compte/${this.route.params.id}/reservations?type=${this.account.type}`);
     },
   },
 };
 </script>
-
-<style scoped>
-/* Container principal */
-.compte-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 50px;
-}
-
-/* Carte contenant les informations du compte */
-.account-card {
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  padding: 30px;
-  margin-top: 20px;
-  text-align: left;
-}
-
-.account-details {
-  margin-bottom: 20px;
-}
-
-.account-details p {
-  margin: 10px 0;
-}
-
-/* Style du bouton "Consulter mes réservations" */
-.btn-reservation {
-  padding: 10px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-/* Style du bouton au survol */
-.btn-reservation:hover {
-  background-color: #2d3748;
-}
-
-/* Message de chargement */
-.loading-state {
-  font-size: 1.25rem;
-  color: #718096;
-  margin-top: 30px;
-}
-</style>
