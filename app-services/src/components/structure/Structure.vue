@@ -8,12 +8,16 @@
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
                 <div class="flex flex-col space-y-2">
-                    <button class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button 
+                    @click="redirectToConnexion"
+                    class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Se connecter
                     </button>
 
                     <!-- Bouton Créer un compte -->
-                    <button class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    <button 
+                    @click="redirectToSignup"
+                    class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Créer un compte
                     </button>
                 </div>
@@ -87,6 +91,14 @@ export default {
     goToCategory(categoryId) {
       // Redirige l'utilisateur vers une page spécifique à la catégorie
       
+    },
+    // Redirige vers la page de connexion
+    redirectToConnexion() {
+            this.$router.push('/Connexion'); // Assurez-vous que cette route existe
+    },
+    // Redirige vers la page de création de compte
+    redirectToSignup() {
+        this.$router.push('/CreerCompte'); // Assurez-vous que cette route existe
     }
   }
 };
