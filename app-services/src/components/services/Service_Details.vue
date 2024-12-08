@@ -20,8 +20,9 @@
           @previous-date="previousDate"
           @update:modelValue="change"
       />
-      <p>reservation Selected: {{ reservations ? reservations : 'No Meeting selected' }}</p>
+      <p> Les créneaux disponibles ne sont que de 1 heure. Merci de votre compréhension.</p>
     </div>
+    <button @click="reserveSlot" class="reserve-button">Reserver le(s) créneau(x) selectionné(s)</button>
   </div>
   <div v-else class="loading-container">
     <p>Loading...</p>
@@ -52,7 +53,7 @@ export default defineComponent({
 
 
     const change = () => {
-      console.log(reservations.value);
+      console.log('reservations dans change', reservations.value);
     };
 
     return {
@@ -90,7 +91,6 @@ export default defineComponent({
         console.log('Service fetched:', this.service);
         console.log('Profession du service:', this.service.profession);
         if (this.service) {
-          console.log('Date fetch', new Date());
           await this.updateReservationDays(this.service, new Date());
         }
       } catch (error) {
@@ -98,7 +98,6 @@ export default defineComponent({
       }
     },
     async updateReservationDays(service, date) {
-      console.log('COUCOU');
       try {
         let response = await axios.get(`http://localhost:3000/api/services?id_calendrier=${service.calendrier.id_calendrier}`);
         const openingHours = response.data[0].calendrier;
@@ -106,25 +105,17 @@ export default defineComponent({
         response = await axios.get(`http://localhost:3000/api/reservations?id_prestataire=${service.id_prestataire}`);
         const reservationsData = response.data;
 
-        // const reservations = reservationsData.map(reservation => ({
-        //   date: new Date(reservation.date_rdv),
-        //   start_time: reservation.time_rdv.split('-')[0], // Extract the start time
-        //   end_time: reservation.time_rdv.split('-')[1]
-        // }));
+        const reservations = reservationsData.map(reservation => {
+          const localDate = new Date(reservation.date_rdv);
+          const adjustedDate = new Date(localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
+          return {
+            date: adjustedDate.toISOString(),
+            start_time: reservation.time_rdv.split('-')[0],
+            end_time: reservation.time_rdv.split('-')[1]
+          };
+        });
 
-        const reservations = [
-          {
-            date: new Date("2024-12-09T00:00:00.000Z"),
-            start_time: "10:00:00",
-            end_time: "11:00:00"
-          },
-          {
-            date: new Date("2024-12-11T00:00:00.000Z"),
-            start_time: "14:00:00",
-            end_time: "15:00:00"
-          }
-        ];
-        console.log(reservations);
+
         if (!openingHours) {
           console.error('No opening hours found for service:', service);
           return;
@@ -162,7 +153,6 @@ export default defineComponent({
       const nextMonday = new Date(d);
       nextMonday.setDate(d.getDate() + diff);
       this.date = nextMonday;
-      console.log('Next date:', this.date);
       this.updateReservationDays(this.service, this.date);
     },
     previousDate() {
@@ -183,6 +173,51 @@ export default defineComponent({
 
       console.log('Previous date:', this.date);
       this.updateReservationDays(this.service, this.date);
+    },
+    async reserveSlot() {
+      if (this.reservations.length === 0) {
+        alert('No slot selected');
+        return;
+      }
+
+      const formattedReservations = this.reservations.map(reservation => {
+        const date = new Date(reservation.date);
+        const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+
+        // Convert the time to local time and add one hour
+        const localTime = new Date(reservation.date);
+        const startTime = localTime.toTimeString().split(' ')[0]; // Get local time in HH:MM:SS format
+        localTime.setHours(localTime.getHours() + 1);
+        const endTime = localTime.toTimeString().split(' ')[0]; // Get local time + 1 hour in HH:MM:SS format
+
+        const formattedTime = `${startTime}-${endTime}`; // Format time as HH:MM:SS-HH:MM:SS
+
+        return {
+          date_rdv: formattedDate,
+          time_rdv: formattedTime,
+          id_service: this.service.id_service,
+          id_prestataire: this.service.id_prestataire,
+          id_client: 3 // Replace with actual client ID
+        };
+      });
+
+      const confirmationMessage = formattedReservations.map(res =>
+          `Date: ${res.date_rdv}, Time: ${res.time_rdv}`
+      ).join('\n');
+
+      if (confirm(`Do these slots work for you?\n\n${confirmationMessage}`)) {
+        try {
+          for (const reservation of formattedReservations) {
+            await axios.post('http://localhost:3000/api/reservations', reservation);
+          }
+          alert('Reservations successful');
+        } catch (error) {
+          console.error('Failed to reserve slots:', error);
+          alert('Failed to reserve slots');
+        }
+      } else {
+        alert('Reservation cancelled');
+      }
     }
   }
 });
@@ -214,6 +249,17 @@ export default defineComponent({
   margin-bottom: 8px;
 }
 
+.reserve-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 .loading-container {
   text-align: center;

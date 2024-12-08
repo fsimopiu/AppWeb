@@ -75,7 +75,6 @@ function generateSlots(start, end, interval, reservations) {
     let startStamp = start.getTime();
     const endStamp = end.getTime();
     const slots = [];
-    console.log('a quoi ressemble reservations', reservations);
     for (; startStamp <= endStamp; startStamp += interval * 60000) {
         let overlaps = false;
 
@@ -139,15 +138,12 @@ function generateFirstDate(date, interval, startTime, endTime, reservations) {
  */
 function generateDays(date, nbDays, startTime, endTime, interval, reservations) {
     const days = [];
-    console.log('a quoi ressemble reservations (GenerateDays)', reservations);
     days.push(generateFirstDate(date, interval, startTime, endTime, reservations));
     // Set to second Day
     const startingDay = new Date(date);
     for (let i = 1; i < nbDays; i += 1) {
-        console.log('Loop iteration:', i);
         startingDay.setDate(startingDay.getDate() + 1);
         const slotsDate = new Date(startingDay);
-        console.log('a quoi ressemble reservations (dans la boucle)', reservations);
         const startDate = setTime(slotsDate, startTime);
         const endDate = setTime(slotsDate, endTime);
         const slots = generateSlots(
@@ -164,6 +160,7 @@ function generateDays(date, nbDays, startTime, endTime, interval, reservations) 
         // }
     }
     return days;
+
 }
 
 export default generateDays;

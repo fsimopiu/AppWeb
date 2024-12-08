@@ -23,7 +23,7 @@ const routes = [
                 component: ContentAccueil
             },
             {
-                path:'PageServices',
+                path:'PageServices/:categoryId',
                 component: Page_Services
             },
             {

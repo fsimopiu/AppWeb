@@ -33,7 +33,7 @@
             <!-- Sidebar -->
             <aside class="w-64 bg-gray-800 text-white p-4">
                 <div class="relative mb-4">
-                    
+
                     <b-dropdown class="services m-md-2">
                         <template #button-content>
                             <div class="flex items-center space-x-2">
@@ -49,7 +49,7 @@
                         <b-dropdown-item
                             v-for="categorie in categories"
                             :key="categorie.id"
-                            @click="goToCategory(categorie.id)"
+                            @click="goToCategory(categorie.id_categorie)"
                         >
                             {{ categorie.nom }}
                         </b-dropdown-item>
@@ -95,7 +95,8 @@ export default {
     methods: {
     goToCategory(categoryId) {
       // Redirige l'utilisateur vers une page spécifique à la catégorie
-      
+      console.log('Redirection vers la catégorie :', categoryId);
+      this.$router.push({path:`/ReservationService/PageServices/${categoryId}` });
     },
     // Redirige vers la page de connexion
     redirectToConnexion() {
