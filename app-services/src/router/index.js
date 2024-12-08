@@ -30,6 +30,16 @@ const routes = [
                 path: 'service/:id',
                 component: Service_Details,
                 props: true
+            },
+            {
+                path: '/compte/:id', 
+                name: 'page de compte',
+                component: pageCompte
+            },
+            {   
+                path: '/compte/:id/reservations', 
+                name: 'Page Reservations ', 
+                component: ReservationsPage 
             }
         ]
     },
@@ -43,16 +53,6 @@ const routes = [
         path: '/CreerCompte',
         component: CreerCompte,
         name: 'Inscription'
-    },
-    {
-        path: '/compte/:id', 
-        name: 'page de compte',
-        component: pageCompte
-    },
-    {   
-        path: '/compte/:id/reservations', 
-        name: 'Page Reservations ', 
-        component: ReservationsPage 
     }
 ]
 
