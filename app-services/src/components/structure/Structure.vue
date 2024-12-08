@@ -4,7 +4,12 @@
         <nav class="menu absolute top-0 left-0 w-full text-white p-4 shadow flex justify-between items-center">
             <div class="text-xl font-bold">Reservation des services</div>
             <div class="flex items-center">
-                <div style="margin-right: 30px; color:brown"  class="flex items-center justify-center rounded-full">
+                <!-- Icône de profil cliquable -->
+                <div 
+                    @click="redirectToAccount" 
+                    style="margin-right: 30px; color:brown; cursor: pointer;"  
+                    class="flex items-center justify-center rounded-full"
+                >
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
                 <div class="flex flex-col space-y-2">
@@ -99,6 +104,11 @@ export default {
     // Redirige vers la page de création de compte
     redirectToSignup() {
         this.$router.push('/CreerCompte'); // Assurez-vous que cette route existe
+    },
+    // Redirige vers la page de compte
+    redirectToAccount() {
+        const userId = 1; // Remplacez par l'ID dynamique si disponible (ex. à partir d'une session ou d'un store Vuex)
+        this.$router.push(`/compte/${userId}`); // Redirige vers la page de compte avec l'ID
     }
   }
 };

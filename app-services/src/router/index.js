@@ -5,9 +5,8 @@ import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
 import Page_Services from '../components/services/Page_Services.vue';
 import Service_Details from '../components/services/Service_Details.vue';
 import Structure from '../components/structure/Structure.vue';
-//import home_compte from '../components/comptes/home_compte.vue';
-//import Connexion from '../components/comptes/login.vue';
-//import Inscription from '../components/comptes/register.vue';
+import pageCompte from '../components/comptes/pageCompte.vue';
+import ReservationsPage from '../components/reservation/reservation.vue';
 
 
 const routes = [
@@ -44,6 +43,16 @@ const routes = [
         path: '/CreerCompte',
         component: CreerCompte,
         name: 'Inscription'
+    },
+    {
+        path: '/compte/:id', 
+        name: 'page de compte',
+        component: pageCompte
+    },
+    {   
+        path: '/compte/:id/reservations', 
+        name: 'Page Reservations ', 
+        component: ReservationsPage 
     }
 ]
 
