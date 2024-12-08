@@ -1,0 +1,25 @@
+.menu {
+    height: 15%;
+    background-image: url('./../../assets/fond_menu.avif') !important;
+    background-size: cover; 
+    background-repeat: no-repeat;
+}
+
+.fas {
+    width: 5Opx;
+}
+
+.page {
+    height: 100%;
+}
+
+.contenu {
+    margin-top: 100px;
+    height: 100%;
+}
+
+
+main {
+    padding: 0;
+    margin-top: 0;
+}
