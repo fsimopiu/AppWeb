@@ -52,4 +52,32 @@ router.get('/', async (req, res) => {
     }
 });
 
+//route pour créer une nouvelle réservation
+router.post('/', async (req, res) => {
+    const { date_rdv, time_rdv, id_service, id_client, id_prestataire } = req.body;
+
+    // Validation des données
+    if (!date_rdv || !time_rdv || !id_service || !id_client || !id_prestataire) {
+        return res.status(400).json({ message: 'Tous les champs sont requis.' });
+    }
+
+    try {
+        // Création de la nouvelle réservation
+        const newReservation = await prisma.reservation.create({
+            data: {
+                date_rdv,
+                time_rdv,
+                id_service: parseInt(id_service),
+                id_client: parseInt(id_client),
+                id_prestataire: parseInt(id_prestataire)
+            }
+        });
+
+        res.status(201).json(newReservation);
+    } catch (error) {
+        console.error("Erreur lors de la création de la réservation:", error);
+        res.status(500).json({ message: 'Erreur serveur', details: error.message });
+    }
+});
+
 export default router;
