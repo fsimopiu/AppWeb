@@ -24,7 +24,15 @@ router.post('/', async (req, res) => {
         }
 
         const { password: _, ...userWithoutPassword } = user;
-        res.status(200).json({ message: 'Connexion réussie', user: userWithoutPassword });
+
+        // Renvoi de l'ID du compte ainsi que les autres informations
+        res.status(200).json({ 
+            message: 'Connexion réussie', 
+            user: { 
+                id: user.id, // Ajout de l'ID de l'utilisateur
+                ...userWithoutPassword 
+            } 
+        });
     } catch (error) {
         console.error("Erreur lors de la connexion :", error);
         res.status(500).json({ message: 'Erreur serveur' });
