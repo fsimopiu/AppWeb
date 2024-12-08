@@ -29,13 +29,22 @@ export default {
       selectedService: null
     };
   },
-  async created(){
-    try {
-      const response = await axios.get('http://localhost:3000/api/services');
-      this.services = response.data;
-      console.log('Services fetched :', this.services);
-    } catch (error) {
-      console.error('Failed to fetch services :', error);
+  async created() {
+    await this.fetchServices();
+  },
+  watch: {
+    '$route.params.categoryId': 'fetchServices'
+  },
+  methods: {
+    async fetchServices() {
+      const categoryId = this.$route.params.categoryId;
+      try {
+        const response = await axios.get(`http://localhost:3000/api/services?id_categorie=${categoryId}`);
+        this.services = response.data;
+        console.log('Services fetched:', this.services);
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      }
     }
   }
 }
