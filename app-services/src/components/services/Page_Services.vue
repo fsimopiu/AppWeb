@@ -30,8 +30,9 @@ export default {
     };
   },
   async created(){
+    const category_Id = this.$route.params.categoryId;
     try {
-      const response = await axios.get('http://localhost:3000/api/services');
+      const response = await axios.get(`http://localhost:3000/api/services?id_categorie=${category_Id}`);
       this.services = response.data;
       console.log('Services fetched :', this.services);
     } catch (error) {
