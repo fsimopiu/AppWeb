@@ -107,7 +107,7 @@ export default {
     },
     // Redirige vers la page de compte
     redirectToAccount() {
-        const userId = 1; // Remplacez par l'ID dynamique si disponible (ex. à partir d'une session ou d'un store Vuex)
+        const userId = 3; // Remplacez par l'ID dynamique si disponible (ex. à partir d'une session ou d'un store Vuex)
         this.$router.push(`/compte/${userId}`); // Redirige vers la page de compte avec l'ID
     }
   }

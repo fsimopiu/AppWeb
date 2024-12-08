@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <h1>Mes Réservations</h1>
-    <div v-if="reservations.length">
-      <ul>
-        <li v-for="reservation in reservations" :key="reservation.id_reservation">
-          <p><strong>Date :</strong> {{ reservation.date_rdv }}</p>
-          <p><strong>Heure :</strong> {{ reservation.time_rdv }}</p>
-          <p><strong>Service :</strong> {{ reservation.service.titre }}</p>
-          <p><strong>Adresse :</strong> {{ reservation.service.adresse }}</p>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      <p>Aucune réservation trouvée.</p>
+  <div class="reservations-container p-6">
+    <h2 class="text-2xl font-bold mb-4">Mes Réservations</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div
+        v-for="reservation in reservations"
+        :key="reservation.id_reservation"
+        class="card bg-white shadow-md p-4 rounded-lg border border-gray-200"
+      >
+        <!-- Affichage des informations de la réservation -->
+        <p class="text-lg font-semibold">Date : <span class="font-normal">{{ reservation.date_rdv }}</span></p>
+        <p class="text-lg font-semibold">Heure : <span class="font-normal">{{ reservation.time_rdv }}</span></p>
+        <p class="text-lg font-semibold">Service : <span class="font-normal">{{ reservation.service.titre }}</span></p>
+        <p class="text-lg font-semibold">Adresse : <span class="font-normal">{{ reservation.service.adresse }}</span></p>
+      </div>
     </div>
   </div>
 </template>
