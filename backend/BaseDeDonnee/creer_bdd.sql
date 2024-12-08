@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS compte (
     id_compte INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT,
     prenom TEXT,
-    mail TEXT,
+    mail TEXT UNIQUE,
     type INTEGER,
     password TEXT
 );
