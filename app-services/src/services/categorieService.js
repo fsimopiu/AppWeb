@@ -11,6 +11,6 @@ const apiClient = axios.create({
 export default {
   // Méthodes pour les comptes
   getCategories(id) {
-    return id ? apiClient.get(`/comptes/${id}`) : apiClient.get('/comptes');
+    return id ? apiClient.get(`/categories/${id}`) : apiClient.get('/categories');
   }
 }

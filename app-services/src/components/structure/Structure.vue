@@ -8,16 +8,12 @@
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
                 <div class="flex flex-col space-y-2">
-                    <button 
-                    @click="seConnecter"
-                    class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Se connecter
                     </button>
 
                     <!-- Bouton Créer un compte -->
-                    <button 
-                    @click="CreerCompte"
-                    class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Créer un compte
                     </button>
                 </div>
@@ -32,31 +28,35 @@
                     <b-dropdown class="services m-md-2">
                         <template #button-content>
                             <div class="flex items-center space-x-2">
-                                <span><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg></span>
+                                <span>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                </span>
                                 <span class="dropdown-text">Mes Catégories</span>
                             </div>
                         </template>
-                        <b-dropdown-item>Cat1</b-dropdown-item>
-                        <b-dropdown-item>Cat2</b-dropdown-item>
-                        <b-dropdown-item>Cat3</b-dropdown-item>
-                        <!-- <b-dropdown-divider></b-dropdown-divider> -->
-                        <!-- <b-dropdown-item active>Active action</b-dropdown-item>
-                        <b-dropdown-item disabled>Disabled action</b-dropdown-item> -->
+                        <!-- Redirection dynamique pour chaque catégorie -->
+                        <b-dropdown-item
+                            v-for="categorie in categories"
+                            :key="categorie.id"
+                            @click="goToCategory(categorie.id)"
+                        >
+                            {{ categorie.nom }}
+                        </b-dropdown-item>
                     </b-dropdown>
                 </div>
             </aside>
 
             <!-- Contenu principal -->
             <main class="flex-1 p-8 bg-gray-100 text-black h-full">
-                <router-view></router-view>
+                <Accueil></Accueil>
             </main>
         </div>
          <!-- Footer -->
         <footer class="bg-blue-600 text-white">
             <p class="text-center">© 2024 Mon Application</p>
-        </footer>  
+        </footer> 
     </div>
    
 </template>
@@ -64,16 +64,31 @@
 <style scoped src="./Structure.css"></style>
 
 <script>
+import categorieService from '../../services/categorieService';
+
 export default {
-    methods: {
-        // Redirection vers la page Se connecter
-        seConnecter() {
-            this.$router.push('/Connexion'); // Assurez-vous que cette route existe dans votre fichier de configuration
-        },
-        // Redirection vers la page Créer un compte
-        CreerCompte() {
-            this.$router.push('/CreerCompte'); // Assurez-vous que cette route est bien définie comme enfant de /Connexion
+    name: 'Structure',
+    data() {
+        return {
+        comptes: [],
+        };
+    },
+    async created() {
+        try {
+            const responseCategories = await categorieService.getCategories();
+            this.categories = responseCategories.data;
+            console.log("Catégories récupérées :", this.categories);
+        } catch(error) {
+            console.error("Erreur lors de la récupération des catégories", error);
         }
+        
+    },
+    methods: {
+    goToCategory(categoryId) {
+      // Redirige l'utilisateur vers une page spécifique à la catégorie
+      
     }
+  }
 };
 </script>
+

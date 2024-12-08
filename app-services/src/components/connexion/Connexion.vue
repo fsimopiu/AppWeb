@@ -77,6 +77,7 @@ export default {
                 if (response.status === 200) {
                     console.log('Connexion réussie:', response.data);
                     // Vous pouvez rediriger l'utilisateur ou stocker le token ici
+                    console.log(response.data);
                 }
             } catch (error) {
                 if (error.response) {
