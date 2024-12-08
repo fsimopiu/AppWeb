@@ -30,13 +30,14 @@ model compte {
   id_compte                                      Int           @id @default(autoincrement())
   nom                                            String?
   prenom                                         String?
-  mail                                           String?
+  mail                                           String?       @unique // Ajout de la contrainte de clé unique
   type                                           Int? ///* type : 0 pour client et 1 pour prestataire */
   password                                       String?
   reservation_reservation_id_clientTocompte      reservation[] @relation("reservation_id_clientTocompte")
   reservation_reservation_id_prestataireTocompte reservation[] @relation("reservation_id_prestataireTocompte")
   service                                        service[]
 }
+
 
 model reservation {
   id_reservation                            Int      @id @default(autoincrement())

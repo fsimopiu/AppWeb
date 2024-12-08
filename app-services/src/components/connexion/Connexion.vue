@@ -29,7 +29,7 @@
                 <!-- Bouton Valider -->
                 <div class="flex items-center justify-start mb-4">
                     <button
-                        :disabled = "emmail == '' || password == ''" 
+                        :disabled="email == '' || password == ''" 
                         type="submit" 
                         class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
                         Valider
@@ -47,36 +47,11 @@
             </form>
         </div>
     </div>
-    <router-view></router-view> 
 </template>
 
-<style scoped>
-.page {
-    height: 100vh;
-    background-image: url('./../../assets/fond_menu.avif');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.login-container {
-    width: 90%;
-    max-width: 400px;
-}
-
-.input-field {
-    transition: all 0.3s ease-in-out;
-}
-
-.input-field:focus {
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-}
-
-button {
-    transition: background-color 0.3s ease;
-}
-</style>
-
 <script>
+import axios from 'axios';
+
 export default {
     name: "Connexion",
     data() {
@@ -86,10 +61,30 @@ export default {
         };
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
             // Fonction appelée lors de la soumission du formulaire
             console.log("Email:", this.email);
             console.log("Password:", this.password);
+
+            try {
+                // Envoi de la requête de connexion
+                const response = await axios.post('http://localhost:3000/api/connexion/login', {
+                    mail: this.email,
+                    password: this.password
+                });
+
+                // Gérer la réponse du serveur
+                if (response.status === 200) {
+                    console.log('Connexion réussie:', response.data);
+                    // Vous pouvez rediriger l'utilisateur ou stocker le token ici
+                }
+            } catch (error) {
+                if (error.response) {
+                    console.log('Erreur:', error.response.data.message);
+                } else {
+                    console.log('Erreur serveur:', error);
+                }
+            }
         },
         redirectToSignup() {
             this.$router.push('/CreerCompte');

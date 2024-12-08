@@ -5,8 +5,7 @@ import bcrypt from 'bcrypt';
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Route pour se connecter
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
     const { mail, password } = req.body;
 
     try {
@@ -18,14 +17,12 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Utilisateur introuvable.' });
         }
 
-        // Vérification du mot de passe
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Mot de passe incorrect.' });
         }
 
-        // Retourner les informations utilisateur sans le mot de passe
         const { password: _, ...userWithoutPassword } = user;
         res.status(200).json({ message: 'Connexion réussie', user: userWithoutPassword });
     } catch (error) {

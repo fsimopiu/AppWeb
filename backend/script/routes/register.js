@@ -6,7 +6,7 @@ const router = express.Router();
 const prisma = new PrismaClient(); // Instance Prisma pour interagir avec la base de données
 
 // Route POST : Inscription d'un utilisateur
-router.post('/register', async (req, res) => {
+router.post('/', async (req, res) => {
     const { nom, prenom, mail, password, type } = req.body;
 
     try {
