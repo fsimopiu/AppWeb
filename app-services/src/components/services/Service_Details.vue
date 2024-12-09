@@ -35,6 +35,8 @@ import { defineComponent, ref } from "vue";
 import VueMeetingSelector from "vue-meeting-selector";
 import "vue-meeting-selector/dist/style.css";
 import slotsGenerator from "./slotsGenerator.js";
+import { useUserStore } from '../../services/store/user';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   components: {
@@ -46,7 +48,8 @@ export default defineComponent({
     const date = ref(new Date());
     const service = ref (null);
     const meetingSelector = ref(null);
-
+    const userStore = useUserStore();
+    const router = useRouter();
 
     const up = () => meetingSelector.value.previousMeetings();
     const down = () => meetingSelector.value.nextMeetings();
@@ -65,6 +68,8 @@ export default defineComponent({
       down,
       change,
       service,
+      userStore,
+      router,
     };
   },
   props: {
@@ -171,10 +176,14 @@ export default defineComponent({
         this.date = previousMonday;
       }
 
-      console.log('Previous date:', this.date);
       this.updateReservationDays(this.service, this.date);
     },
     async reserveSlot() {
+      if (!this.userStore.user || this.userStore.user.id_compte == null) {
+        this.router.push('/Connexion');
+        return;
+      }
+
       if (this.reservations.length === 0) {
         alert('No slot selected');
         return;
@@ -197,7 +206,7 @@ export default defineComponent({
           time_rdv: formattedTime,
           id_service: this.service.id_service,
           id_prestataire: this.service.id_prestataire,
-          id_client: 3 // Replace with actual client ID
+          id_client: this.userStore.user.id_compte // Replace with actual client ID
         };
       });
 
