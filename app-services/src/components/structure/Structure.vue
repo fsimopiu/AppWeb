@@ -4,25 +4,29 @@
         <nav class="menu absolute top-0 left-0 w-full text-white p-4 shadow flex justify-between items-center">
             <div class="text-xl font-bold">Reservation des services</div>
             <div class="flex items-center">
-                <!-- Icône de profil cliquable -->
-                <div 
-                    @click="redirectToAccount" 
-                    style="margin-right: 30px; color:brown; cursor: pointer;"  
-                    class="flex items-center justify-center rounded-full"
-                >
+                <div @click="redirectToAccount" style="margin-right: 20px; color:brown; cursor: pointer;"  class="flex items-center justify-center rounded-full">
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
-                <div class="flex flex-col space-y-2">
+                <!-- Si l'utilisateur est connecté, affiche son nom abrégé -->
+                <div v-if="userStore.user" class="flex items-center space-x-2">
+                    <div 
+                        style="margin-right: 30px; color:brown;"  
+                        class="flex items-center justify-center text-black text-xl font-bold w-12 h-12">
+                        {{ userStore.user.nom[0].toUpperCase() }}.  {{ userStore.user.prenom }}
+                    </div>
+                </div>
+
+                <!-- Si l'utilisateur n'est pas connecté, affiche les boutons -->
+                <div v-else class="flex flex-col space-y-2">
                     <button 
-                    @click="redirectToConnexion"
-                    class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        @click="redirectToConnexion"
+                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Se connecter
                     </button>
 
-                    <!-- Bouton Créer un compte -->
                     <button 
-                    @click="redirectToSignup"
-                    class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        @click="redirectToSignup"
+                        class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Créer un compte
                     </button>
                 </div>
@@ -33,7 +37,6 @@
             <!-- Sidebar -->
             <aside class="w-64 bg-gray-800 text-white p-4">
                 <div class="relative mb-4">
-
                     <b-dropdown class="services m-md-2">
                         <template #button-content>
                             <div class="flex items-center space-x-2">
@@ -67,51 +70,54 @@
             <p class="text-center">© 2024 Mon Application</p>
         </footer> 
     </div>
-   
 </template>
+
 
 <style scoped src="./Structure.css"></style>
 
 <script>
 import categorieService from '../../services/categorieService';
+import { useUserStore } from '../../services/store/user';
 
 export default {
     name: 'Structure',
     data() {
         return {
-        comptes: [],
+            comptes: [],
+            categories: [], // Liste des catégories
         };
+    },
+    setup() {
+        const userStore = useUserStore(); // Accéder au store utilisateur
+        return { userStore };
     },
     async created() {
         try {
+            // Récupérer les catégories
             const responseCategories = await categorieService.getCategories();
             this.categories = responseCategories.data;
             console.log("Catégories récupérées :", this.categories);
-        } catch(error) {
-            console.error("Erreur lors de la récupération des catégories", error);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données :", error);
         }
-        
     },
     methods: {
-    goToCategory(categoryId) {
-      // Redirige l'utilisateur vers une page spécifique à la catégorie
-      console.log('Redirection vers la catégorie :', categoryId);
-      this.$router.push({path:`/ReservationService/PageServices/${categoryId}` });
-    },
-    // Redirige vers la page de connexion
-    redirectToConnexion() {
-            this.$router.push('/Connexion'); // Assurez-vous que cette route existe
-    },
-    // Redirige vers la page de création de compte
-    redirectToSignup() {
-        this.$router.push('/CreerCompte'); // Assurez-vous que cette route existe
-    },
-    // Redirige vers la page de compte
-    redirectToAccount() {
-        const userId = 1; // Remplacez par l'ID dynamique si disponible (ex. à partir d'une session ou d'un store Vuex)
-        this.$router.push(`/compte/${userId}`); // Redirige vers la page de compte avec l'ID
+        goToCategory(categoryId) {
+            console.log('Redirection vers la catégorie :', categoryId);
+            this.$router.push({ path: `/ReservationService/PageServices/${categoryId}` });
+        },
+        redirectToConnexion() {
+            this.$router.push('/Connexion');
+        },
+        redirectToSignup() {
+            this.$router.push('/CreerCompte');
+        },
+        redirectToAccount() {
+            if (this.userStore.user) {
+                this.$router.push(`/compte/${this.userStore.user.id_compte}`);
+            }
+        }
     }
-  }
 };
 </script>
 

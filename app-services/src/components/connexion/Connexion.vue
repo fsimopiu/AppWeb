@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import { useUserStore } from '../../services/store/user'; // Importer le store utilisateur
 
 export default {
     name: "Connexion",
@@ -60,9 +61,12 @@ export default {
             password: "" // Stocke le mot de passe saisi
         };
     },
+    setup() {
+        const userStore = useUserStore(); // Accéder au store utilisateur
+        return { userStore };
+    },
     methods: {
         async handleSubmit() {
-            // Fonction appelée lors de la soumission du formulaire
             console.log("Email:", this.email);
             console.log("Password:", this.password);
 
@@ -76,14 +80,20 @@ export default {
                 // Gérer la réponse du serveur
                 if (response.status === 200) {
                     console.log('Connexion réussie:', response.data);
-                    // Vous pouvez rediriger l'utilisateur ou stocker le token ici
-                    console.log(response.data);
+
+                    // Stocker les données utilisateur dans le store
+                    this.userStore.setUser(response.data.user);
+
+                    // Redirection vers la page d'accueil
+                    this.$router.push('/ReservationService/Accueil');
                 }
             } catch (error) {
                 if (error.response) {
                     console.log('Erreur:', error.response.data.message);
+                    alert(error.response.data.message);
                 } else {
                     console.log('Erreur serveur:', error);
+                    alert('Une erreur serveur est survenue.');
                 }
             }
         },
@@ -93,6 +103,7 @@ export default {
     }
 };
 </script>
+
 
 <style scoped>
 .page {
