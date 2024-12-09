@@ -1,22 +1,20 @@
 <template>
   <div class="service-box border border-black p-4
   box-border rounded overflow-auto shadow-lg
-  bg-blue-500 flex flex-row"
+  bg-white flex flex-row items-center"
        @click="navigatetoDetails">
-    <div class="text-left">
-      <p class="mb-12"> {{ nom }}</p>
-      <p class="mb-5"> {{ addr }}</p>
-      <p class="mb-5"> {{ profession }}</p>
+    <div class="text-left flex-1">
+      <p class="mb-2 font-bold text-lg"> {{ nom }}</p>
+      <p class="mb-2 text-gray-600"> {{ addr }}</p>
+      <p class="mb-2 text-gray-600"> {{ profession }}</p>
     </div>
-    <div>
+    <div class="image-container">
       <img class="scaled-image" :src="imageSrc"/>
     </div>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: 'Case_services',
   props: {
@@ -35,18 +33,25 @@ export default {
 </script>
 
 <style scoped>
-.scaled-image {
-  max-height: 50%;
-  max-width: 50%;
-  object-fit: contain;
-  margin-left: 2px;
-}
 .service-box {
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
 }
 
 .service-box:hover {
   background-color: #f0f0f0;
+  transform: scale(1.02);
 }
 
+.scaled-image {
+  max-height: 100px;
+  max-width: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-container {
+  flex-shrink: 0;
+  margin-left: 16px;
+}
 </style>
