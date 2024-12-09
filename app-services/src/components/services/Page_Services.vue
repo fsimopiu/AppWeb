@@ -1,32 +1,33 @@
 <template>
-  <div class = service_container>
-    <!-- creer une case par service contenu dans services (services sauvegardés) -->
+  <div class="service_container">
+    <!-- Create a case for each service contained in services (saved services) -->
     <Case_services
         v-for="service in services"
+        :key="service.id_service"
         :id="service.id_service"
         :nom="service.compte.nom"
         :addr="service.adresse"
         :profession="service.profession"
-        :image-src=imagePath
+        :image-src="getImagePath(service.id_categorie)"
     />
   </div>
 </template>
 
 <script>
 import Case_services from './Case_services.vue';
-import imagePath from '../../assets/img_services/doctor.jpg';
+import doctorImage from '../../assets/img_services/doctor.jpg';
+import hairstylistImage from '../../assets/img_services/hairstylist.jpg';
 import axios from 'axios';
 
-
-
-
 export default {
-  components: {Case_services},
+  components: { Case_services },
   data() {
     return {
       services: [],
-      imagePath: imagePath,
-      selectedService: null
+      images: {
+        doctor: doctorImage,
+        hairstylist: hairstylistImage
+      }
     };
   },
   async created() {
@@ -45,18 +46,46 @@ export default {
       } catch (error) {
         console.error('Failed to fetch services:', error);
       }
+    },
+    getImagePath(categoryId) {
+      switch (categoryId) {
+        case 1:
+          return this.images.doctor;
+        case 2:
+          return this.images.hairstylist;
+        default:
+          return this.images.doctor; // Default image
+      }
     }
   }
 }
 </script>
+
 <style scoped>
-.service_container{
+.service-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bienvenue {
+  margin-top: 20px;
+}
+
+.services-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 32px;
+  width: 100%;
 }
-.service_container > *{
+
+.service-container > * {
   flex: 0 0 calc(50% - 32px); /* Adjust size and spacing */
   box-sizing: border-box;
 }
