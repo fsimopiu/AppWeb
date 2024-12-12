@@ -1,5 +1,5 @@
-import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import express from 'express';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -47,5 +47,58 @@ router.get('/', async (req, res) => {
   }
 });
 
-export default router;
+router.post('/create', async (req, res) => {
+  const {
+    titre,
+    description,
+    adresse,
+    profession,
+    id_categorie,
+    id_prestataire
+  } = req.body;
 
+  // Validation des champs requis
+  if (!titre || !description || !adresse || !id_prestataire) {
+    return res.status(400).json({ message: 'Tous les champs obligatoires doivent être fournis.' });
+  }
+
+  try {
+    // Création d'un calendrier
+    const newCalendrier = await prisma.calendrier.create({
+      data: {
+        lundi: calendrier.lundi || null,
+        mardi: calendrier.mardi || null,
+        mercredi: calendrier.mercredi || null,
+        jeudi: calendrier.jeudi || null,
+        vendredi: calendrier.vendredi || null,
+        samedi: calendrier.samedi || null,
+        dimanche: calendrier.dimanche || null,
+      },
+    });
+
+    // Création du service avec le calendrier associé
+    const newService = await prisma.service.create({
+      data: {
+        titre,
+        description,
+        adresse,
+        profession,
+        id_categorie: id_categorie || null,
+        id_calendrier: newCalendrier.id_calendrier, // Associer l'ID du calendrier
+        id_prestataire,
+      },
+    });
+
+    res.status(201).json({
+      message: 'Service et calendrier créés avec succès.',
+      service: newService,
+      calendrier: newCalendrier,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la création du service ou du calendrier :", error);
+    res.status(500).json({ message: 'Erreur serveur', details: error.message });
+  }
+});
+
+
+export default router;

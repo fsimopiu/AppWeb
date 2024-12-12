@@ -4,16 +4,20 @@
         <nav class="menu absolute top-0 left-0 w-full text-white p-4 shadow flex justify-between items-center">
             <div class="text-xl font-bold">Reservation des services</div>
             <div class="flex items-center">
-                <div @click="redirectToAccount" style="margin-right: 20px; color:brown; cursor: pointer;"  class="flex items-center justify-center rounded-full">
+                <div @click="redirectToAccount" style="margin-right: 20px; color:brown; cursor: pointer;" class="flex items-center justify-center rounded-full">
                     <i class="fas fa-user text-6xl"></i> <!-- Icône d'utilisateur -->
                 </div>
-                <!-- Si l'utilisateur est connecté, affiche son nom abrégé -->
-                <div v-if="userStore.user" class="flex items-center space-x-2">
-                    <div 
-                        style="margin-right: 30px; color:brown;"  
-                        class="flex items-center justify-center text-black text-xl font-bold w-12 h-12">
-                        {{ userStore.user.nom[0].toUpperCase() }}.  {{ userStore.user.prenom }}
+                
+                <!-- Si l'utilisateur est connecté, affiche son nom abrégé et le bouton déconnexion -->
+                <div v-if="userStore.user" class="flex flex-col items-center space-y-2">
+                    <div style="color:brown;" class="flex items-center justify-center text-black text-xl font-bold">
+                        {{ userStore.user.nom[0].toUpperCase() }}.{{ userStore.user.prenom }}
                     </div>
+                    <button 
+                        @click="logout"
+                        class="btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Déconnexion
+                    </button>
                 </div>
 
                 <!-- Si l'utilisateur n'est pas connecté, affiche les boutons -->
@@ -31,6 +35,7 @@
                     </button>
                 </div>
             </div>
+
         </nav>
 
         <div class="contenu flex pt-20">
@@ -58,7 +63,17 @@
                         </b-dropdown-item>
                     </b-dropdown>
                 </div>
+
+                <!-- Bouton Offrir un Service -->
+                <div v-if="userStore.user && userStore.user.type == 1" class="mt-4">
+                    <button 
+                        @click="offerService"
+                        class="btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded w-full">
+                        Offrir un service
+                    </button>
+                </div>
             </aside>
+
 
             <!-- Contenu principal -->
             <main class="flex-1 p-8 bg-gray-100 text-black h-full">
@@ -116,8 +131,18 @@ export default {
             if (this.userStore.user) {
                 this.$router.push(`/compte/${this.userStore.user.id_compte}`);
             }
-        }
-    }
+        },
+        logout() {
+            // Effacer les informations utilisateur
+            this.userStore.clearUser();
+
+            // Redirection vers la page d'accueil
+            this.$router.push('/ReservationService/Accueil');
+        },
+        offerService() {
+            // Redirection vers la page pour offrir un service
+            this.$router.push('/CreerService');
+        },
+    },
 };
 </script>
-

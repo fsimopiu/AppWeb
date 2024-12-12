@@ -8,6 +8,7 @@ import App from './App.vue';
 import CreerCompte from './components/comptes/CreerCompte.vue';
 import Connexion from './components/connexion/Connexion.vue';
 import ContentAccueil from './components/contentAccueil/ContentAccueil.vue';
+import CreerService from './components/services/CreerService.vue';
 import router from './router';
 import './style.css';
 
@@ -25,5 +26,6 @@ for (const [key, component] of Object.entries(BootstrapVueNext)) {
 app.component("Accueil", ContentAccueil);
 app.component("Connexion", Connexion);
 app.component("CreerCompte", CreerCompte);
+app.component("CreerService", CreerService);
 app.mount('#app');
 

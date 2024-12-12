@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreerCompte from '../components/comptes/CreerCompte.vue';
+import pageCompte from '../components/comptes/pageCompte.vue';
 import Connexion from '../components/connexion/Connexion.vue';
 import ContentAccueil from '../components/contentAccueil/ContentAccueil.vue';
+import ReservationsPage from '../components/reservation/reservation.vue';
+import CreerService from '../components/services/CreerService.vue';
 import Page_Services from '../components/services/Page_Services.vue';
 import Service_Details from '../components/services/Service_Details.vue';
 import Structure from '../components/structure/Structure.vue';
-import pageCompte from '../components/comptes/pageCompte.vue';
-import ReservationsPage from '../components/reservation/reservation.vue';
 
 
 const routes = [
@@ -53,6 +54,11 @@ const routes = [
         path: '/CreerCompte',
         component: CreerCompte,
         name: 'Inscription'
+    },
+    {
+        path: '/CreerService',
+        component: CreerService,
+        name: 'CreerService'
     }
 ]
 
