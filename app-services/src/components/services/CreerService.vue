@@ -152,7 +152,7 @@ export default {
                 const response = await servicesService.createService(serviceData);
 
                 alert('Service créé avec succès.');
-                this.$router.push('/ReservationService/PageServices');
+                this.$router.push('/ReservationService/Accueil');
             } catch (error) {
                 console.error('Erreur lors de la création du service :', error);
                 alert(error.response?.data?.message || 'Une erreur serveur est survenue.');

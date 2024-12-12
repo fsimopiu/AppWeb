@@ -66,13 +66,13 @@ router.post('/create', async (req, res) => {
     // Création d'un calendrier
     const newCalendrier = await prisma.calendrier.create({
       data: {
-        lundi: calendrier.lundi || null,
-        mardi: calendrier.mardi || null,
-        mercredi: calendrier.mercredi || null,
-        jeudi: calendrier.jeudi || null,
-        vendredi: calendrier.vendredi || null,
-        samedi: calendrier.samedi || null,
-        dimanche: calendrier.dimanche || null,
+        lundi: '08:00:00-16:00:00',
+        mardi: '08:00:00-16:00:00',
+        mercredi: '08:00:00-16:00:00',
+        jeudi: '08:00:00-16:00:00',
+        vendredi: '08:00:00-16:00:00',
+        samedi: '08:00:00-16:00:00',
+        dimanche: '08:00:00-16:00:00',
       },
     });
 
@@ -83,7 +83,7 @@ router.post('/create', async (req, res) => {
         description,
         adresse,
         profession,
-        id_categorie: id_categorie || null,
+        id_categorie: id_categorie,
         id_calendrier: newCalendrier.id_calendrier, // Associer l'ID du calendrier
         id_prestataire,
       },
