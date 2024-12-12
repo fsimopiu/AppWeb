@@ -19,40 +19,14 @@
                 pour divers services dans la région toulousaine. Profitez d’une expérience fluide, sécurisée, et adaptée à vos attentes, et rejoignez dès maintenant notre communauté de services de confiance.
             </p>
         </div>
-
-        <!-- à supprimer : Exemple pour tester l'api backend -->
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-lg w-full">
-            <h2 class="text-2xl font-semibold text-purple-600 mb-4">J'affiche les comptes</h2>
-            <ul class="list-disc list-inside">
-                <li v-for="compte in comptes" :key="compte.id_compte" class="text-gray-700">
-                    {{ compte.nom }} - {{ compte.prenom }}
-                </li>
-            </ul>
-        </div>
     </div>
 </template>
 
 
 <script>
-import compteServices from '../../services/comptesServices';
 
 export default {
     name: 'ContentAccueil',
-    data() {
-        return {
-        comptes: []
-        };
-    },
-    async created() {
-        try {
-        const response = await compteServices.getComptes();
-        this.comptes = response.data;
-        console.log(this.comptes);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des comptes", error);
-        };
-        
-    }
 };
 </script>
 

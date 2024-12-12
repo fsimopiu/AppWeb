@@ -132,14 +132,6 @@ export default {
                 return;
             }
 
-            console.log(JSON.stringify({
-                        nom: this.nom,
-                        prenom: this.prenom,
-                        mail: this.email,
-                        password: this.password,
-                        type: this.typeCompte === "Prestataire" ? 1 : 0, // 1 pour Prestataire, 0 pour Client
-                    }));
-
             try {
                 // Appel API pour créer un compte
                 const response = await fetch('http://localhost:3000/api/connexion/register', {
