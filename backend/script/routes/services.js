@@ -4,31 +4,31 @@ import express from 'express';
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Route pour récupérer un service spécifique ou tous les services
+// Route pour récupérer dans la bdd un service spécifique ou tous les services si pas d'id passé
 router.get('/', async (req, res) => {
-  const { id_service, titre, description, adresse, id_categorie, id_calendrier } = req.query; // Récupérer les paramètres de la requête
+  const { id_service, titre, description, adresse, id_categorie, id_calendrier } = req.query; //recup paramètres de la requête
 
-  const filters = {}; // Objet pour construire les filtres
+  const filters = {}; 
 
-  // Validation et ajout des filtres en fonction des paramètres fournis
+  //filtrage en fonction des paramètres fournis
   if (id_service) {
     if (isNaN(id_service)) {
-      return res.status(400).json({ message: 'id_service doit être un nombre.' });
+      return res.status(400).json({ message: 'id_service doit être un nombre.' }); //erreur si l'id est pas un chiffre
     }
     filters.id_service = parseInt(id_service);
   }
   if (titre) filters.titre = { contains: titre, mode: 'insensitive' }; // Recherche insensible à la casse
-  if (description) filters.description = { contains: description, mode: 'insensitive' };
-  if (adresse) filters.adresse = { contains: adresse, mode: 'insensitive' };
+  if (description) filters.description = { contains: description, mode: 'insensitive' }; // Recherche insensible à la casse
+  if (adresse) filters.adresse = { contains: adresse, mode: 'insensitive' }; // Recherche insensible à la casse
   if (id_categorie) {
     if (isNaN(id_categorie)) {
-      return res.status(400).json({ message: 'id_categorie doit être un nombre.' });
+      return res.status(400).json({ message: 'id_categorie doit être un nombre.' }); //erreur si la catégorie est pas un chiffre
     }
     filters.id_categorie = parseInt(id_categorie);
   }
   if (id_calendrier) {
     if (isNaN(id_calendrier)) {
-      return res.status(400).json({ message: 'id_calendrier doit être un nombre.' });
+      return res.status(400).json({ message: 'id_calendrier doit être un nombre.' }); //erreur si calendrier est pas un chiffre
     }
     filters.id_calendrier = parseInt(id_calendrier);
   }
@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
   try {
     // Récupérer les services en fonction des filtres
     const services = await prisma.service.findMany({
-      where: filters, // Utiliser les filtres construits
+      where: filters,
       include: { categorie: true, calendrier: true, compte: true },
     });
 

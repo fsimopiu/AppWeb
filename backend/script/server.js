@@ -12,17 +12,16 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Middleware de débogage
+// Middleware de débogage pour afficher toutes les requetes qui arrive au serv
 /*app.use((req, res, next) => {
   console.log(`[DEBUG] Requête reçue : ${req.method} ${req.url}`);
   console.log(`[DEBUG] Corps de la requête :`, req.body);
   next();
 });*/
 
-// Autoriser les requêtes depuis l'origine spécifique (par exemple, http://localhost:5173)
-// Configuration CORS
+// Autoriser les requêtes depuis http://localhost:5173
 app.use(cors({
-  origin: 'http://localhost:5173' // L'URL du frontend
+  origin: 'http://localhost:5173' 
 }));
 
 // Charger les routes

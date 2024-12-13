@@ -3,14 +3,14 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const router = express.Router();
-const prisma = new PrismaClient(); // Instance Prisma pour interagir avec la base de données
+const prisma = new PrismaClient();
 
 // Route POST : Inscription d'un utilisateur
 router.post('/', async (req, res) => {
     const { nom, prenom, mail, password, type } = req.body;
 
     try {
-        // Vérifier si un utilisateur avec cet email existe déjà
+        // Vérifier si l'email existe déjà
         const existingUser = await prisma.compte.findUnique({
             where: { mail },
         });
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ message: 'Un utilisateur avec cet email existe déjà.' });
         }
 
-        // Hashage du mot de passe pour des raisons de sécurité
+        // Hashage du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Création d'un nouvel utilisateur dans la base de données
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
         });
     } catch (error) {
         console.error('Erreur lors de la création de l’utilisateur :', error);
-        res.status(500).json({ message: 'Erreur serveur' });
+        res.status(500).json({ message: 'Erreur serveur' }); //erreur 500 erreur de serveur
     }
 });
 

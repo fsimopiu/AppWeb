@@ -8,12 +8,12 @@ const prisma = new PrismaClient();
 router.get('/', async (req, res) => {
   const { id_categorie, nom } = req.query; // Récupérer les paramètres de la requête
 
-  const filters = {}; // Objet pour construire les filtres
+  const filters = {};
 
   // Validation et ajout des filtres en fonction des paramètres fournis
   if (id_categorie) {
     if (isNaN(id_categorie)) {
-      return res.status(400).json({ message: 'id_categorie doit être un nombre.' });
+      return res.status(400).json({ message: 'id_categorie doit être un nombre.' }); //erreur si l'id est pas un chiffre
     }
     filters.id_categorie = parseInt(id_categorie);
   }
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
   try {
     // Récupérer les catégories en fonction des filtres
     const categories = await prisma.categorie.findMany({
-      where: filters, // Utiliser les filtres construits
+      where: filters,
       include: { service: true },
     });
 

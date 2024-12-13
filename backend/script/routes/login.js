@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         res.status(200).json({ 
             message: 'Connexion réussie', 
             user: { 
-                id: user.id, // Ajout de l'ID de l'utilisateur
+                id: user.id, 
                 ...userWithoutPassword 
             } 
         });
