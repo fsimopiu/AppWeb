@@ -1,20 +1,4 @@
-/**
- * @typedef {Object} MeetingSlot
- * @property {Date} date - Date of the meeting
- * any other props
- */
-
-/**
- * @typedef {Object} Time
- * @property {number} hours - Hours
- * @property {number} minutes - Minutes
- */
-
-/**
- * used to format a date, to compare with other date without time
- * @param {Date} date - Date to decompose
- * @return {String} YYYYMMDD
- */
+// Formatter une date en format YYYY-MM-DD
 function formatingDate(date) {
     const d = new Date(date);
     const day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
@@ -24,12 +8,6 @@ function formatingDate(date) {
 }
 
 
-/**
- * Set a time to a date
- * @param {Date} date - A date
- * @param {Time} time - time of the date
- * @return {Date} date with the good time
- */
 function setTime(date, time) {
     const d = new Date(date);
     d.setHours(time.hours);
@@ -49,28 +27,7 @@ function roundToClosestTime(date, interval) {
     return d;
 }
 
-/**
- * Round a date with tz
- * @param {Date} date - date used to disable
- */
-// function roundDate(date) {
-//   const tz = -date.getTimezoneOffset();
-//   const time = {
-//     hours: Math.floor(tz / 60),
-//     minutes: tz % 60,
-//   };
-//   return setTime(date, time);
-// }
-
-/**
- * Function to generate the first slot of the week used
- * @param {Date} date - date used to disable
- * @param {Number} interval - Interval between two meetings (minutes)
- * @param {Time} startTime - startTime of the meetings
- * @param {Time} endTime - endTime of the meetings
- * @param {number} randomSlotsToDelete - Number of slots to delete randomly
- * @return {MeetingSlot[]} - A list of meetings
- */
+// Generer des slots de temps pour les disponibilitées, en vérifiant les disponibilitées
 function generateSlots(start, end, interval, reservations) {
     let startStamp = start.getTime();
     const endStamp = end.getTime();
@@ -100,14 +57,6 @@ function generateSlots(start, end, interval, reservations) {
     return slots;
 }
 
-/**
- * Function to generate the first slot of the week used
- * @param {Date} date - date used to disable
- * @param {Number} interval - Interval between two meetings (minutes)
- * @param {Time} startTime - startTime of the meetings
- * @param {Time} endTime - endTime of the meetings
- * @return {MeetingSlot} - A meetingSlot returned
- */
 function generateFirstDate(date, interval, startTime, endTime, reservations) {
     let start;
     if (formatingDate(date) <= formatingDate(new Date())) {
@@ -126,16 +75,6 @@ function generateFirstDate(date, interval, startTime, endTime, reservations) {
     };
 }
 
-/**
- * Function applicated to the button previous to disable it
- * @param {Date} date - date used to start
- * @param {Number} nbDays - number of days to generate
- * @param {Time} startTime - startTime of the meetings
- * @param {Time} endTime - endTime of the meetings
- * @param {Number} interval - Interval between two meetings (minutes)
- * @param {number} randomSlotsToDelete - Number of slots to delete randomly
- * @return {MeetingSlot[]} - list of slots
- */
 function generateDays(date, nbDays, startTime, endTime, interval, reservations) {
     const days = [];
     days.push(generateFirstDate(date, interval, startTime, endTime, reservations));
@@ -157,7 +96,6 @@ function generateDays(date, nbDays, startTime, endTime, interval, reservations) 
             slots,
         };
         days.push(meetingsDay);
-        // }
     }
     return days;
 

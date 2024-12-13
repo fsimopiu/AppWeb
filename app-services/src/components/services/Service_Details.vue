@@ -22,7 +22,7 @@
       />
       <p> Les créneaux disponibles ne sont que de 1 heure. Merci de votre compréhension.</p>
     </div>
-    <button @click="reserveSlot" class="reserve-button">Reserver le(s) créneau(x) selectionné(s)</button>
+    <button @click="reserveSlot" class="reserve-button">Réserver le(s) créneau(x) selectionné(s)</button>
   </div>
   <div v-else class="loading-container">
     <p>Loading...</p>
@@ -129,7 +129,7 @@ export default defineComponent({
         const daysOfWeek = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
         let reservationDaysArray = [];
 
-        const todayIndex = date.getDay(); // Get the specified day index (0 for Sunday, 1 for Monday, etc.)
+        const todayIndex = date.getDay();
 
         daysOfWeek.forEach((day, index) => {
           const adjustedIndex = (todayIndex + index) % 7;
@@ -139,7 +139,7 @@ export default defineComponent({
             const end = { hours: parseInt(endTime.split(':')[0]), minutes: parseInt(endTime.split(':')[1]) };
 
             const dayDate = new Date(date);
-            dayDate.setDate(date.getDate() + index); // Set the date to the current day plus the index
+            dayDate.setDate(date.getDate() + index);
 
             const daySlots = slotsGenerator(dayDate, 1, start, end, 60, reservations);
             reservationDaysArray.push(...daySlots);
@@ -151,6 +151,7 @@ export default defineComponent({
         console.error('Failed to fetch service:', error);
       }
     },
+    // Avancer d'une semaine sur le calendrier
     nextDate() {
       const d = new Date(this.date);
       const day = d.getDay();
@@ -160,15 +161,16 @@ export default defineComponent({
       this.date = nextMonday;
       this.updateReservationDays(this.service, this.date);
     },
+    //reculer d'une semaine sur le calendrier
     previousDate() {
       const d = new Date(this.date);
       const day = d.getDay();
-      const diff = day === 1 ? -7 : -(day - 1); // Calculate the difference to the previous Monday
+      const diff = day === 1 ? -7 : -(day - 1);
       const previousMonday = new Date(d);
       previousMonday.setDate(d.getDate() + diff);
 
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+      today.setHours(0, 0, 0, 0);
 
       if (previousMonday < today) {
         this.date = new Date();
@@ -191,22 +193,22 @@ export default defineComponent({
 
       const formattedReservations = this.reservations.map(reservation => {
         const date = new Date(reservation.date);
-        const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+        const formattedDate = date.toISOString().split('T')[0];
 
-        // Convert the time to local time and add one hour
+
         const localTime = new Date(reservation.date);
-        const startTime = localTime.toTimeString().split(' ')[0]; // Get local time in HH:MM:SS format
+        const startTime = localTime.toTimeString().split(' ')[0];
         localTime.setHours(localTime.getHours() + 1);
-        const endTime = localTime.toTimeString().split(' ')[0]; // Get local time + 1 hour in HH:MM:SS format
+        const endTime = localTime.toTimeString().split(' ')[0];
 
-        const formattedTime = `${startTime}-${endTime}`; // Format time as HH:MM:SS-HH:MM:SS
+        const formattedTime = `${startTime}-${endTime}`;
 
         return {
           date_rdv: formattedDate,
           time_rdv: formattedTime,
           id_service: this.service.id_service,
           id_prestataire: this.service.id_prestataire,
-          id_client: this.userStore.user.id_compte // Replace with actual client ID
+          id_client: this.userStore.user.id_compte
         };
       });
 
