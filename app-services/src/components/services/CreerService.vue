@@ -131,6 +131,7 @@ export default {
             this.selectedCategory = categorie;
             this.service.id_categorie = categorie.id_categorie;
         },
+        // Gérer la création du service
         async handleCreateService() {
             const userStore = useUserStore();
 
@@ -149,7 +150,7 @@ export default {
 
                 // Appel au service API pour créer le service
                 console.log(serviceData);
-                const response = await servicesService.createService(serviceData);
+                ;
 
                 alert('Service créé avec succès.');
                 this.$router.push('/ReservationService/Accueil');

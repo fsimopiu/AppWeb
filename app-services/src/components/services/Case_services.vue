@@ -4,11 +4,15 @@
   bg-white flex flex-row items-center"
        @click="navigatetoDetails">
     <div class="text-left flex-1">
+      <!-- Service name -->
       <p class="mb-2 font-bold text-lg"> {{ nom }}</p>
+      <!-- Service address -->
       <p class="mb-2 text-gray-600"> {{ addr }}</p>
+      <!-- Service profession -->
       <p class="mb-2 text-gray-600"> {{ profession }}</p>
     </div>
     <div class="image-container">
+      <!-- Service image -->
       <img class="scaled-image" :src="imageSrc"/>
     </div>
   </div>

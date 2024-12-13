@@ -1,6 +1,5 @@
 <template>
   <div class="service_container">
-    <!-- Create a case for each service contained in services (saved services) -->
     <Case_services
         v-for="service in services"
         :key="service.id_service"
@@ -54,7 +53,7 @@ export default {
         case 2:
           return this.images.hairstylist;
         default:
-          return this.images.doctor; // Default image
+          return this.images.doctor;
       }
     }
   }
@@ -62,31 +61,9 @@ export default {
 </script>
 
 <style scoped>
-.service-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.bienvenue {
-  margin-top: 20px;
-}
-
-.services-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 32px;
-  width: 100%;
-}
 
 .service-container > * {
-  flex: 0 0 calc(50% - 32px); /* Adjust size and spacing */
+  flex: 0 0 calc(50% - 32px);
   box-sizing: border-box;
 }
 </style>
