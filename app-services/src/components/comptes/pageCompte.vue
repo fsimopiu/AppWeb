@@ -43,8 +43,8 @@ export default {
   mounted() {
     const id = this.route.params.id;
 
-    // Redirige vers la page de connexion si l'ID est -1
-    if (id === '-1') {
+    // Redirige vers la page de connexion si l'ID est null
+    if (id === null) {
       this.router.push('/Connexion');
       return;
     }
