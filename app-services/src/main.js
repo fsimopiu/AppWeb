@@ -18,7 +18,6 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 
-// Enregistre tous les composants BootstrapVueNext globalement
 for (const [key, component] of Object.entries(BootstrapVueNext)) {
     app.component(key, component);
 }

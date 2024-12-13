@@ -1,4 +1,3 @@
-// api.js
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -9,7 +8,6 @@ const apiClient = axios.create({
 });
 
 export default {
-  // Méthodes pour les comptes
   getCategories(id) {
     return id ? apiClient.get(`/categories/${id}`) : apiClient.get('/categories');
   }
